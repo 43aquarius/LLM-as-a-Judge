@@ -1,0 +1,1180 @@
+{
+ "n_judgments_raw": 9496,
+ "n_judgments_parsed": 9453,
+ "n_retests": 650,
+ "judges": [
+  "Qwen3.7-Flash",
+  "Qwen3.8-Flash",
+  "Qwen3.8-27B",
+  "Qwen3.8-Max",
+  "Qwen3.8-2.4T",
+  "DeepSeek-V4-Flash",
+  "DeepSeek-V4.1-Flash",
+  "DeepSeek-V4-Pro",
+  "GLM-5.3",
+  "Kimi-K3",
+  "Agnes-2.5-Flash",
+  "Agnes-3.0-Flash"
+ ],
+ "parse_rate": {
+  "Qwen3.7-Flash": 1.0,
+  "Qwen3.8-Flash": 1.0,
+  "Qwen3.8-27B": 1.0,
+  "Qwen3.8-Max": 1.0,
+  "Qwen3.8-2.4T": 1.0,
+  "DeepSeek-V4-Flash": 1.0,
+  "DeepSeek-V4.1-Flash": 1.0,
+  "DeepSeek-V4-Pro": 1.0,
+  "GLM-5.3": 0.9439775910364145,
+  "Kimi-K3": 1.0,
+  "Agnes-2.5-Flash": 0.99625,
+  "Agnes-3.0-Flash": 1.0
+ },
+ "tie_rate": {
+  "Qwen3.7-Flash": 0.1525,
+  "Qwen3.8-Flash": 0.2875,
+  "Qwen3.8-27B": 0.245,
+  "Qwen3.8-Max": 0.245,
+  "Qwen3.8-2.4T": 0.3118556701030928,
+  "DeepSeek-V4-Flash": 0.5025,
+  "DeepSeek-V4.1-Flash": 0.4425,
+  "DeepSeek-V4-Pro": 0.5875,
+  "GLM-5.3": 0.47076023391812866,
+  "Kimi-K3": 0.4375,
+  "Agnes-2.5-Flash": 0.4396984924623116,
+  "Agnes-3.0-Flash": 0.2825
+ },
+ "gt_accuracy": {
+  "Qwen3.7-Flash": {
+   "acc": 0.7121212121212122,
+   "ci": [
+    0.5492352552816901,
+    0.8593818530701754
+   ],
+   "n": 66
+  },
+  "Qwen3.8-Flash": {
+   "acc": 0.7121212121212122,
+   "ci": [
+    0.53125,
+    0.8688524590163934
+   ],
+   "n": 66
+  },
+  "Qwen3.8-27B": {
+   "acc": 0.6515151515151515,
+   "ci": [
+    0.4925315729047072,
+    0.8032786885245902
+   ],
+   "n": 66
+  },
+  "Qwen3.8-Max": {
+   "acc": 0.6363636363636364,
+   "ci": [
+    0.463768115942029,
+    0.7941799601196406
+   ],
+   "n": 66
+  },
+  "Qwen3.8-2.4T": {
+   "acc": 0.696969696969697,
+   "ci": [
+    0.5223880597014925,
+    0.8571931589537221
+   ],
+   "n": 66
+  },
+  "DeepSeek-V4-Flash": {
+   "acc": 0.42424242424242425,
+   "ci": [
+    0.2580414746543779,
+    0.6057103490508262
+   ],
+   "n": 66
+  },
+  "DeepSeek-V4.1-Flash": {
+   "acc": 0.5606060606060606,
+   "ci": [
+    0.39436619718309857,
+    0.7206063162970106
+   ],
+   "n": 66
+  },
+  "DeepSeek-V4-Pro": {
+   "acc": 0.3181818181818182,
+   "ci": [
+    0.17567567567567569,
+    0.486597051597051
+   ],
+   "n": 66
+  },
+  "GLM-5.3": {
+   "acc": 0.6060606060606061,
+   "ci": [
+    0.44281512605042017,
+    0.7627118644067796
+   ],
+   "n": 66
+  },
+  "Kimi-K3": {
+   "acc": 0.5,
+   "ci": [
+    0.359375,
+    0.6515316205533596
+   ],
+   "n": 66
+  },
+  "Agnes-2.5-Flash": {
+   "acc": 0.6212121212121212,
+   "ci": [
+    0.44826299536798764,
+    0.7818881118881116
+   ],
+   "n": 66
+  },
+  "Agnes-3.0-Flash": {
+   "acc": 0.6060606060606061,
+   "ci": [
+    0.4492503748125937,
+    0.7611940298507462
+   ],
+   "n": 66
+  }
+ },
+ "position_bias": {
+  "Qwen3.7-Flash": {
+   "first_rate": 0.5752212389380531,
+   "bias": 0.0752212389380531,
+   "ci": [
+    0.5162171347954341,
+    0.6329526798235112
+   ],
+   "n": 339
+  },
+  "Qwen3.8-Flash": {
+   "first_rate": 0.5649122807017544,
+   "bias": 0.06491228070175437,
+   "ci": [
+    0.5054132353507972,
+    0.6228447941951143
+   ],
+   "n": 285
+  },
+  "Qwen3.8-27B": {
+   "first_rate": 0.6125827814569537,
+   "bias": 0.11258278145695366,
+   "ci": [
+    0.5559207898940642,
+    0.6656010928961748
+   ],
+   "n": 302
+  },
+  "Qwen3.8-Max": {
+   "first_rate": 0.4867549668874172,
+   "bias": -0.013245033112582794,
+   "ci": [
+    0.42901211256573796,
+    0.543918918918919
+   ],
+   "n": 302
+  },
+  "Qwen3.8-2.4T": {
+   "first_rate": 0.47191011235955055,
+   "bias": -0.02808988764044945,
+   "ci": [
+    0.41731447420423795,
+    0.5272984562607202
+   ],
+   "n": 267
+  },
+  "DeepSeek-V4-Flash": {
+   "first_rate": 0.542713567839196,
+   "bias": 0.042713567839196,
+   "ci": [
+    0.4720812182741117,
+    0.6093970352564101
+   ],
+   "n": 199
+  },
+  "DeepSeek-V4.1-Flash": {
+   "first_rate": 0.6457399103139013,
+   "bias": 0.14573991031390132,
+   "ci": [
+    0.5859030837004405,
+    0.7059019607843137
+   ],
+   "n": 223
+  },
+  "DeepSeek-V4-Pro": {
+   "first_rate": 0.5696969696969697,
+   "bias": 0.0696969696969697,
+   "ci": [
+    0.4970405343159834,
+    0.641029411764706
+   ],
+   "n": 165
+  },
+  "GLM-5.3": {
+   "first_rate": 0.5193370165745856,
+   "bias": 0.01933701657458564,
+   "ci": [
+    0.45054945054945056,
+    0.5879201680672269
+   ],
+   "n": 181
+  },
+  "Kimi-K3": {
+   "first_rate": 0.5422222222222223,
+   "bias": 0.04222222222222227,
+   "ci": [
+    0.47885793018983464,
+    0.6106254755135545
+   ],
+   "n": 225
+  },
+  "Agnes-2.5-Flash": {
+   "first_rate": 0.4484304932735426,
+   "bias": -0.05156950672645738,
+   "ci": [
+    0.38139436342136385,
+    0.5138888888888888
+   ],
+   "n": 223
+  },
+  "Agnes-3.0-Flash": {
+   "first_rate": 0.47038327526132406,
+   "bias": -0.029616724738675937,
+   "ci": [
+    0.4127475712207256,
+    0.5300101351351351
+   ],
+   "n": 287
+  }
+ },
+ "flip_rate": {
+  "Qwen3.7-Flash": {
+   "flip_rate": 0.32,
+   "ci": [
+    0.2686413294352977,
+    0.3718623309785643
+   ],
+   "n": 400
+  },
+  "Qwen3.8-Flash": {
+   "flip_rate": 0.2625,
+   "ci": [
+    0.21465904737581407,
+    0.31016503780195465
+   ],
+   "n": 400
+  },
+  "Qwen3.8-27B": {
+   "flip_rate": 0.3075,
+   "ci": [
+    0.25735294117647056,
+    0.35930421813501
+   ],
+   "n": 400
+  },
+  "Qwen3.8-Max": {
+   "flip_rate": 0.1975,
+   "ci": [
+    0.15841584158415842,
+    0.2375
+   ],
+   "n": 400
+  },
+  "Qwen3.8-2.4T": {
+   "flip_rate": 0.12532637075718014,
+   "ci": [
+    0.08695652173913043,
+    0.16535433070866143
+   ],
+   "n": 383
+  },
+  "DeepSeek-V4-Flash": {
+   "flip_rate": 0.2925,
+   "ci": [
+    0.2429228436657682,
+    0.34595989516013215
+   ],
+   "n": 400
+  },
+  "DeepSeek-V4.1-Flash": {
+   "flip_rate": 0.28,
+   "ci": [
+    0.23096416485375876,
+    0.3290832350528151
+   ],
+   "n": 400
+  },
+  "DeepSeek-V4-Pro": {
+   "flip_rate": 0.25,
+   "ci": [
+    0.20630694105737818,
+    0.2942586847089314
+   ],
+   "n": 400
+  },
+  "GLM-5.3": {
+   "flip_rate": 0.13836477987421383,
+   "ci": [
+    0.09646108549955448,
+    0.1809877995512935
+   ],
+   "n": 318
+  },
+  "Kimi-K3": {
+   "flip_rate": 0.25,
+   "ci": [
+    0.20342173036727382,
+    0.2990546094083092
+   ],
+   "n": 400
+  },
+  "Agnes-2.5-Flash": {
+   "flip_rate": 0.2663316582914573,
+   "ci": [
+    0.21813495134896063,
+    0.32207885864135866
+   ],
+   "n": 398
+  },
+  "Agnes-3.0-Flash": {
+   "flip_rate": 0.3325,
+   "ci": [
+    0.28604910714285714,
+    0.3776217344576719
+   ],
+   "n": 400
+  }
+ },
+ "length_bias": {
+  "Qwen3.7-Flash": {
+   "longer_win_rate": 0.4277286135693215,
+   "bias": -0.07227138643067849,
+   "ci": [
+    0.37237075537075537,
+    0.4828571428571429
+   ],
+   "n": 339
+  },
+  "Qwen3.8-Flash": {
+   "longer_win_rate": 0.41754385964912283,
+   "bias": -0.08245614035087717,
+   "ci": [
+    0.35209609103898754,
+    0.48375742401304295
+   ],
+   "n": 285
+  },
+  "Qwen3.8-27B": {
+   "longer_win_rate": 0.41721854304635764,
+   "bias": -0.08278145695364236,
+   "ci": [
+    0.35153338276505036,
+    0.48240642485047264
+   ],
+   "n": 302
+  },
+  "Qwen3.8-Max": {
+   "longer_win_rate": 0.4370860927152318,
+   "bias": -0.0629139072847682,
+   "ci": [
+    0.375,
+    0.5
+   ],
+   "n": 302
+  },
+  "Qwen3.8-2.4T": {
+   "longer_win_rate": 0.40074906367041196,
+   "bias": -0.09925093632958804,
+   "ci": [
+    0.334644546570462,
+    0.46841019981412635
+   ],
+   "n": 267
+  },
+  "DeepSeek-V4-Flash": {
+   "longer_win_rate": 0.5477386934673367,
+   "bias": 0.047738693467336724,
+   "ci": [
+    0.468728497706422,
+    0.6288659793814433
+   ],
+   "n": 199
+  },
+  "DeepSeek-V4.1-Flash": {
+   "longer_win_rate": 0.4663677130044843,
+   "bias": -0.03363228699551568,
+   "ci": [
+    0.3991223153174416,
+    0.539542086849146
+   ],
+   "n": 223
+  },
+  "DeepSeek-V4-Pro": {
+   "longer_win_rate": 0.6121212121212121,
+   "bias": 0.11212121212121207,
+   "ci": [
+    0.5340821946458449,
+    0.6932671841742831
+   ],
+   "n": 165
+  },
+  "GLM-5.3": {
+   "longer_win_rate": 0.3756906077348066,
+   "bias": -0.12430939226519339,
+   "ci": [
+    0.2984271499233461,
+    0.462778729414593
+   ],
+   "n": 181
+  },
+  "Kimi-K3": {
+   "longer_win_rate": 0.4488888888888889,
+   "bias": -0.05111111111111111,
+   "ci": [
+    0.37614394571233606,
+    0.5244728682170542
+   ],
+   "n": 225
+  },
+  "Agnes-2.5-Flash": {
+   "longer_win_rate": 0.34977578475336324,
+   "bias": -0.15022421524663676,
+   "ci": [
+    0.2813852813852814,
+    0.4259280019930244
+   ],
+   "n": 223
+  },
+  "Agnes-3.0-Flash": {
+   "longer_win_rate": 0.4425087108013937,
+   "bias": -0.0574912891986063,
+   "ci": [
+    0.3795322635711847,
+    0.5052283276492532
+   ],
+   "n": 287
+  }
+ },
+ "family_preference": {
+  "Qwen3.7-Flash": {
+   "kin_pairs_n": 213,
+   "kin_win_rate": 0.38028169014084506,
+   "kin_win_ci": [
+    0.30767326732673267,
+    0.44954128440366975
+   ],
+   "kin_wrong_pick_rate": 0.09523809523809523,
+   "kin_wrong_n": 21,
+   "kin_wrong_ci": [
+    0.0,
+    0.25
+   ],
+   "kin_right_pick_rate": 0.5714285714285714,
+   "kin_right_n": 14
+  },
+  "Qwen3.8-Flash": {
+   "kin_pairs_n": 182,
+   "kin_win_rate": 0.3956043956043956,
+   "kin_win_ci": [
+    0.31890683980069456,
+    0.4692737430167598
+   ],
+   "kin_wrong_pick_rate": 0.0,
+   "kin_wrong_n": 19,
+   "kin_wrong_ci": [
+    0.0,
+    0.0
+   ],
+   "kin_right_pick_rate": 0.7333333333333333,
+   "kin_right_n": 15
+  },
+  "Qwen3.8-27B": {
+   "kin_pairs_n": 192,
+   "kin_win_rate": 0.3645833333333333,
+   "kin_win_ci": [
+    0.2934711472797633,
+    0.44199185809828434
+   ],
+   "kin_wrong_pick_rate": 0.10526315789473684,
+   "kin_wrong_n": 19,
+   "kin_wrong_ci": [
+    0.0,
+    0.2631578947368421
+   ],
+   "kin_right_pick_rate": 0.6875,
+   "kin_right_n": 16
+  },
+  "Qwen3.8-Max": {
+   "kin_pairs_n": 189,
+   "kin_win_rate": 0.37566137566137564,
+   "kin_win_ci": [
+    0.2984247267383117,
+    0.4536082474226804
+   ],
+   "kin_wrong_pick_rate": 0.05555555555555555,
+   "kin_wrong_n": 18,
+   "kin_wrong_ci": [
+    0.0,
+    0.2
+   ],
+   "kin_right_pick_rate": 0.625,
+   "kin_right_n": 16
+  },
+  "Qwen3.8-2.4T": {
+   "kin_pairs_n": 174,
+   "kin_win_rate": 0.3333333333333333,
+   "kin_win_ci": [
+    0.2542372881355932,
+    0.4162199072603695
+   ],
+   "kin_wrong_pick_rate": 0.0,
+   "kin_wrong_n": 19,
+   "kin_wrong_ci": [
+    0.0,
+    0.0
+   ],
+   "kin_right_pick_rate": 0.6666666666666666,
+   "kin_right_n": 15
+  },
+  "DeepSeek-V4-Flash": {
+   "kin_pairs_n": 80,
+   "kin_win_rate": 0.475,
+   "kin_win_ci": [
+    0.34615384615384615,
+    0.5949367088607594
+   ],
+   "kin_wrong_pick_rate": 0.0,
+   "kin_wrong_n": 4,
+   "kin_wrong_ci": [
+    0.0,
+    0.0
+   ],
+   "kin_right_pick_rate": 0.7777777777777778,
+   "kin_right_n": 9
+  },
+  "DeepSeek-V4.1-Flash": {
+   "kin_pairs_n": 85,
+   "kin_win_rate": 0.5294117647058824,
+   "kin_win_ci": [
+    0.41972437553832903,
+    0.6352941176470588
+   ],
+   "kin_wrong_pick_rate": 0.0,
+   "kin_wrong_n": 4,
+   "kin_wrong_ci": [
+    0.0,
+    0.0
+   ],
+   "kin_right_pick_rate": 1.0,
+   "kin_right_n": 8
+  },
+  "DeepSeek-V4-Pro": {
+   "kin_pairs_n": 70,
+   "kin_win_rate": 0.5571428571428572,
+   "kin_win_ci": [
+    0.4411764705882353,
+    0.680570652173913
+   ],
+   "kin_wrong_pick_rate": 0.0,
+   "kin_wrong_n": 3,
+   "kin_wrong_ci": [
+    0.0,
+    0.0
+   ],
+   "kin_right_pick_rate": 1.0,
+   "kin_right_n": 6
+  },
+  "GLM-5.3": {
+   "kin_pairs_n": 81,
+   "kin_win_rate": 0.6296296296296297,
+   "kin_win_ci": [
+    0.5060240963855421,
+    0.7469914139315884
+   ],
+   "kin_wrong_pick_rate": 0.2727272727272727,
+   "kin_wrong_n": 11,
+   "kin_wrong_ci": [
+    0.0625,
+    0.626041666666661
+   ],
+   "kin_right_pick_rate": 1.0,
+   "kin_right_n": 11
+  },
+  "Kimi-K3": {
+   "kin_pairs_n": 80,
+   "kin_win_rate": 0.45,
+   "kin_win_ci": [
+    0.3456679894179894,
+    0.5569620253164557
+   ],
+   "kin_wrong_pick_rate": 0.3333333333333333,
+   "kin_wrong_n": 9,
+   "kin_wrong_ci": [
+    0.0,
+    0.75
+   ],
+   "kin_right_pick_rate": 0.6666666666666666,
+   "kin_right_n": 6
+  },
+  "Agnes-2.5-Flash": {
+   "kin_pairs_n": 0,
+   "kin_win_rate": null,
+   "kin_win_ci": null,
+   "kin_wrong_pick_rate": null,
+   "kin_wrong_n": 0,
+   "kin_wrong_ci": null,
+   "kin_right_pick_rate": null,
+   "kin_right_n": 0
+  },
+  "Agnes-3.0-Flash": {
+   "kin_pairs_n": 0,
+   "kin_win_rate": null,
+   "kin_win_ci": null,
+   "kin_wrong_pick_rate": null,
+   "kin_wrong_n": 0,
+   "kin_wrong_ci": null,
+   "kin_right_pick_rate": null,
+   "kin_right_n": 0
+  }
+ },
+ "family_preference_pooled": {
+  "Qwen": {
+   "kin_wrong_pick_rate": 0.052083333333333336,
+   "kin_wrong_ci": [
+    0.00989856338575034,
+    0.11688657087593256
+   ],
+   "kin_wrong_n": 96,
+   "kin_win_rate": 0.3705263157894737,
+   "kin_win_ci": [
+    0.30615539409759085,
+    0.4343004741537229
+   ],
+   "kin_win_n": 950
+  },
+  "DeepSeek": {
+   "kin_wrong_pick_rate": 0.0,
+   "kin_wrong_ci": [
+    0.0,
+    0.0
+   ],
+   "kin_wrong_n": 11,
+   "kin_win_rate": 0.5191489361702127,
+   "kin_win_ci": [
+    0.4173470195181994,
+    0.6156941176470588
+   ],
+   "kin_win_n": 235
+  },
+  "GLM": {
+   "kin_wrong_pick_rate": 0.2727272727272727,
+   "kin_wrong_ci": [
+    0.0625,
+    0.626041666666661
+   ],
+   "kin_wrong_n": 11,
+   "kin_win_rate": 0.6296296296296297,
+   "kin_win_ci": [
+    0.5060240963855421,
+    0.7469914139315884
+   ],
+   "kin_win_n": 81
+  },
+  "Kimi": {
+   "kin_wrong_pick_rate": 0.3333333333333333,
+   "kin_wrong_ci": [
+    0.0,
+    0.75
+   ],
+   "kin_wrong_n": 9,
+   "kin_win_rate": 0.45,
+   "kin_win_ci": [
+    0.3456679894179894,
+    0.5569620253164557
+   ],
+   "kin_win_n": 80
+  }
+ },
+ "n_common_pairs_full": 338,
+ "kappa_matrix": {
+  "Qwen3.7-Flash||Qwen3.8-Flash": 0.556558119806428,
+  "Qwen3.7-Flash||Qwen3.8-27B": 0.5410439272396365,
+  "Qwen3.7-Flash||Qwen3.8-Max": 0.5030911226064425,
+  "Qwen3.7-Flash||Qwen3.8-2.4T": 0.5103659635839193,
+  "Qwen3.7-Flash||DeepSeek-V4-Flash": 0.34140435835351085,
+  "Qwen3.7-Flash||DeepSeek-V4.1-Flash": 0.4423537773242094,
+  "Qwen3.7-Flash||DeepSeek-V4-Pro": 0.2656539522333513,
+  "Qwen3.7-Flash||GLM-5.3": 0.4631412418292638,
+  "Qwen3.7-Flash||Kimi-K3": 0.4616225395879063,
+  "Qwen3.7-Flash||Agnes-2.5-Flash": 0.4395985269694562,
+  "Qwen3.7-Flash||Agnes-3.0-Flash": 0.4813812038820143,
+  "Qwen3.8-Flash||Qwen3.8-27B": 0.7165755431504159,
+  "Qwen3.8-Flash||Qwen3.8-Max": 0.6674319510973802,
+  "Qwen3.8-Flash||Qwen3.8-2.4T": 0.6676030522184369,
+  "Qwen3.8-Flash||DeepSeek-V4-Flash": 0.4751092752257122,
+  "Qwen3.8-Flash||DeepSeek-V4.1-Flash": 0.5949936717761215,
+  "Qwen3.8-Flash||DeepSeek-V4-Pro": 0.41671175839393976,
+  "Qwen3.8-Flash||GLM-5.3": 0.6405490970148296,
+  "Qwen3.8-Flash||Kimi-K3": 0.6575501809958962,
+  "Qwen3.8-Flash||Agnes-2.5-Flash": 0.561911158373911,
+  "Qwen3.8-Flash||Agnes-3.0-Flash": 0.63917235158144,
+  "Qwen3.8-27B||Qwen3.8-Max": 0.6725867549921003,
+  "Qwen3.8-27B||Qwen3.8-2.4T": 0.636809033966999,
+  "Qwen3.8-27B||DeepSeek-V4-Flash": 0.423751994529291,
+  "Qwen3.8-27B||DeepSeek-V4.1-Flash": 0.5242153768345338,
+  "Qwen3.8-27B||DeepSeek-V4-Pro": 0.3529427623951903,
+  "Qwen3.8-27B||GLM-5.3": 0.5978200394517222,
+  "Qwen3.8-27B||Kimi-K3": 0.5860628851786489,
+  "Qwen3.8-27B||Agnes-2.5-Flash": 0.5090852188000515,
+  "Qwen3.8-27B||Agnes-3.0-Flash": 0.5817909519907316,
+  "Qwen3.8-Max||Qwen3.8-2.4T": 0.7009289661247698,
+  "Qwen3.8-Max||DeepSeek-V4-Flash": 0.43800364391185725,
+  "Qwen3.8-Max||DeepSeek-V4.1-Flash": 0.5093417306688881,
+  "Qwen3.8-Max||DeepSeek-V4-Pro": 0.368685742819692,
+  "Qwen3.8-Max||GLM-5.3": 0.6332277722403765,
+  "Qwen3.8-Max||Kimi-K3": 0.5594349753558939,
+  "Qwen3.8-Max||Agnes-2.5-Flash": 0.5568093240785421,
+  "Qwen3.8-Max||Agnes-3.0-Flash": 0.6171378209076867,
+  "Qwen3.8-2.4T||DeepSeek-V4-Flash": 0.4445157532014889,
+  "Qwen3.8-2.4T||DeepSeek-V4.1-Flash": 0.5790138191574358,
+  "Qwen3.8-2.4T||DeepSeek-V4-Pro": 0.3977167783388678,
+  "Qwen3.8-2.4T||GLM-5.3": 0.7023197903014416,
+  "Qwen3.8-2.4T||Kimi-K3": 0.623584382672052,
+  "Qwen3.8-2.4T||Agnes-2.5-Flash": 0.605352578559615,
+  "Qwen3.8-2.4T||Agnes-3.0-Flash": 0.6118874473597343,
+  "DeepSeek-V4-Flash||DeepSeek-V4.1-Flash": 0.5476092130367224,
+  "DeepSeek-V4-Flash||DeepSeek-V4-Pro": 0.5423912139113071,
+  "DeepSeek-V4-Flash||GLM-5.3": 0.5270681015361867,
+  "DeepSeek-V4-Flash||Kimi-K3": 0.546325628690993,
+  "DeepSeek-V4-Flash||Agnes-2.5-Flash": 0.42756942597353975,
+  "DeepSeek-V4-Flash||Agnes-3.0-Flash": 0.44890929965556836,
+  "DeepSeek-V4.1-Flash||DeepSeek-V4-Pro": 0.5647793673181544,
+  "DeepSeek-V4.1-Flash||GLM-5.3": 0.6856745103869599,
+  "DeepSeek-V4.1-Flash||Kimi-K3": 0.6476964769647695,
+  "DeepSeek-V4.1-Flash||Agnes-2.5-Flash": 0.5120430169808953,
+  "DeepSeek-V4.1-Flash||Agnes-3.0-Flash": 0.4877983620602297,
+  "DeepSeek-V4-Pro||GLM-5.3": 0.48594035819117704,
+  "DeepSeek-V4-Pro||Kimi-K3": 0.5364357503946291,
+  "DeepSeek-V4-Pro||Agnes-2.5-Flash": 0.37550416913931656,
+  "DeepSeek-V4-Pro||Agnes-3.0-Flash": 0.4070732882878787,
+  "GLM-5.3||Kimi-K3": 0.7007068327162572,
+  "GLM-5.3||Agnes-2.5-Flash": 0.6391050974613168,
+  "GLM-5.3||Agnes-3.0-Flash": 0.5732783316145296,
+  "Kimi-K3||Agnes-2.5-Flash": 0.5409991762368561,
+  "Kimi-K3||Agnes-3.0-Flash": 0.5522622780969297,
+  "Agnes-2.5-Flash||Agnes-3.0-Flash": 0.5040428741415334
+ },
+ "raw_agreement": {
+  "Qwen3.7-Flash||Qwen3.8-Flash": 0.7125,
+  "Qwen3.7-Flash||Qwen3.8-27B": 0.71,
+  "Qwen3.7-Flash||Qwen3.8-Max": 0.68,
+  "Qwen3.7-Flash||Qwen3.8-2.4T": 0.6752577319587629,
+  "Qwen3.7-Flash||DeepSeek-V4-Flash": 0.5325,
+  "Qwen3.7-Flash||DeepSeek-V4.1-Flash": 0.6175,
+  "Qwen3.7-Flash||DeepSeek-V4-Pro": 0.4625,
+  "Qwen3.7-Flash||GLM-5.3": 0.6257309941520468,
+  "Qwen3.7-Flash||Kimi-K3": 0.6275,
+  "Qwen3.7-Flash||Agnes-2.5-Flash": 0.6080402010050251,
+  "Qwen3.7-Flash||Agnes-3.0-Flash": 0.66,
+  "Qwen3.8-Flash||Qwen3.8-27B": 0.815,
+  "Qwen3.8-Flash||Qwen3.8-Max": 0.78,
+  "Qwen3.8-Flash||Qwen3.8-2.4T": 0.7783505154639175,
+  "Qwen3.8-Flash||DeepSeek-V4-Flash": 0.645,
+  "Qwen3.8-Flash||DeepSeek-V4.1-Flash": 0.73,
+  "Qwen3.8-Flash||DeepSeek-V4-Pro": 0.6025,
+  "Qwen3.8-Flash||GLM-5.3": 0.7602339181286549,
+  "Qwen3.8-Flash||Kimi-K3": 0.77,
+  "Qwen3.8-Flash||Agnes-2.5-Flash": 0.7035175879396985,
+  "Qwen3.8-Flash||Agnes-3.0-Flash": 0.76,
+  "Qwen3.8-27B||Qwen3.8-Max": 0.785,
+  "Qwen3.8-27B||Qwen3.8-2.4T": 0.7577319587628866,
+  "Qwen3.8-27B||DeepSeek-V4-Flash": 0.605,
+  "Qwen3.8-27B||DeepSeek-V4.1-Flash": 0.6825,
+  "Qwen3.8-27B||DeepSeek-V4-Pro": 0.55,
+  "Qwen3.8-27B||GLM-5.3": 0.7280701754385965,
+  "Qwen3.8-27B||Kimi-K3": 0.72,
+  "Qwen3.8-27B||Agnes-2.5-Flash": 0.6633165829145728,
+  "Qwen3.8-27B||Agnes-3.0-Flash": 0.7225,
+  "Qwen3.8-Max||Qwen3.8-2.4T": 0.8015463917525774,
+  "Qwen3.8-Max||DeepSeek-V4-Flash": 0.6125,
+  "Qwen3.8-Max||DeepSeek-V4.1-Flash": 0.665,
+  "Qwen3.8-Max||DeepSeek-V4-Pro": 0.5575,
+  "Qwen3.8-Max||GLM-5.3": 0.7514619883040936,
+  "Qwen3.8-Max||Kimi-K3": 0.7,
+  "Qwen3.8-Max||Agnes-2.5-Flash": 0.6984924623115578,
+  "Qwen3.8-Max||Agnes-3.0-Flash": 0.7475,
+  "Qwen3.8-2.4T||DeepSeek-V4-Flash": 0.6262886597938144,
+  "Qwen3.8-2.4T||DeepSeek-V4.1-Flash": 0.7164948453608248,
+  "Qwen3.8-2.4T||DeepSeek-V4-Pro": 0.5927835051546392,
+  "Qwen3.8-2.4T||GLM-5.3": 0.8023598820058997,
+  "Qwen3.8-2.4T||Kimi-K3": 0.7474226804123711,
+  "Qwen3.8-2.4T||Agnes-2.5-Flash": 0.7357512953367875,
+  "Qwen3.8-2.4T||Agnes-3.0-Flash": 0.7422680412371134,
+  "DeepSeek-V4-Flash||DeepSeek-V4.1-Flash": 0.7125,
+  "DeepSeek-V4-Flash||DeepSeek-V4-Pro": 0.725,
+  "DeepSeek-V4-Flash||GLM-5.3": 0.7046783625730995,
+  "DeepSeek-V4-Flash||Kimi-K3": 0.71,
+  "DeepSeek-V4-Flash||Agnes-2.5-Flash": 0.6331658291457286,
+  "DeepSeek-V4-Flash||Agnes-3.0-Flash": 0.625,
+  "DeepSeek-V4.1-Flash||DeepSeek-V4-Pro": 0.73,
+  "DeepSeek-V4.1-Flash||GLM-5.3": 0.8011695906432749,
+  "DeepSeek-V4.1-Flash||Kimi-K3": 0.7725,
+  "DeepSeek-V4.1-Flash||Agnes-2.5-Flash": 0.6809045226130653,
+  "DeepSeek-V4.1-Flash||Agnes-3.0-Flash": 0.6525,
+  "DeepSeek-V4-Pro||GLM-5.3": 0.6900584795321637,
+  "DeepSeek-V4-Pro||Kimi-K3": 0.71,
+  "DeepSeek-V4-Pro||Agnes-2.5-Flash": 0.6080402010050251,
+  "DeepSeek-V4-Pro||Agnes-3.0-Flash": 0.5925,
+  "GLM-5.3||Kimi-K3": 0.8099415204678363,
+  "GLM-5.3||Agnes-2.5-Flash": 0.7683284457478006,
+  "GLM-5.3||Agnes-3.0-Flash": 0.7134502923976608,
+  "Kimi-K3||Agnes-2.5-Flash": 0.7010050251256281,
+  "Kimi-K3||Agnes-3.0-Flash": 0.6975,
+  "Agnes-2.5-Flash||Agnes-3.0-Flash": 0.6658291457286433
+ },
+ "kappa_pair_n": {
+  "Qwen3.7-Flash||Qwen3.8-Flash": 400,
+  "Qwen3.7-Flash||Qwen3.8-27B": 400,
+  "Qwen3.7-Flash||Qwen3.8-Max": 400,
+  "Qwen3.7-Flash||Qwen3.8-2.4T": 388,
+  "Qwen3.7-Flash||DeepSeek-V4-Flash": 400,
+  "Qwen3.7-Flash||DeepSeek-V4.1-Flash": 400,
+  "Qwen3.7-Flash||DeepSeek-V4-Pro": 400,
+  "Qwen3.7-Flash||GLM-5.3": 342,
+  "Qwen3.7-Flash||Kimi-K3": 400,
+  "Qwen3.7-Flash||Agnes-2.5-Flash": 398,
+  "Qwen3.7-Flash||Agnes-3.0-Flash": 400,
+  "Qwen3.8-Flash||Qwen3.8-27B": 400,
+  "Qwen3.8-Flash||Qwen3.8-Max": 400,
+  "Qwen3.8-Flash||Qwen3.8-2.4T": 388,
+  "Qwen3.8-Flash||DeepSeek-V4-Flash": 400,
+  "Qwen3.8-Flash||DeepSeek-V4.1-Flash": 400,
+  "Qwen3.8-Flash||DeepSeek-V4-Pro": 400,
+  "Qwen3.8-Flash||GLM-5.3": 342,
+  "Qwen3.8-Flash||Kimi-K3": 400,
+  "Qwen3.8-Flash||Agnes-2.5-Flash": 398,
+  "Qwen3.8-Flash||Agnes-3.0-Flash": 400,
+  "Qwen3.8-27B||Qwen3.8-Max": 400,
+  "Qwen3.8-27B||Qwen3.8-2.4T": 388,
+  "Qwen3.8-27B||DeepSeek-V4-Flash": 400,
+  "Qwen3.8-27B||DeepSeek-V4.1-Flash": 400,
+  "Qwen3.8-27B||DeepSeek-V4-Pro": 400,
+  "Qwen3.8-27B||GLM-5.3": 342,
+  "Qwen3.8-27B||Kimi-K3": 400,
+  "Qwen3.8-27B||Agnes-2.5-Flash": 398,
+  "Qwen3.8-27B||Agnes-3.0-Flash": 400,
+  "Qwen3.8-Max||Qwen3.8-2.4T": 388,
+  "Qwen3.8-Max||DeepSeek-V4-Flash": 400,
+  "Qwen3.8-Max||DeepSeek-V4.1-Flash": 400,
+  "Qwen3.8-Max||DeepSeek-V4-Pro": 400,
+  "Qwen3.8-Max||GLM-5.3": 342,
+  "Qwen3.8-Max||Kimi-K3": 400,
+  "Qwen3.8-Max||Agnes-2.5-Flash": 398,
+  "Qwen3.8-Max||Agnes-3.0-Flash": 400,
+  "Qwen3.8-2.4T||DeepSeek-V4-Flash": 388,
+  "Qwen3.8-2.4T||DeepSeek-V4.1-Flash": 388,
+  "Qwen3.8-2.4T||DeepSeek-V4-Pro": 388,
+  "Qwen3.8-2.4T||GLM-5.3": 339,
+  "Qwen3.8-2.4T||Kimi-K3": 388,
+  "Qwen3.8-2.4T||Agnes-2.5-Flash": 386,
+  "Qwen3.8-2.4T||Agnes-3.0-Flash": 388,
+  "DeepSeek-V4-Flash||DeepSeek-V4.1-Flash": 400,
+  "DeepSeek-V4-Flash||DeepSeek-V4-Pro": 400,
+  "DeepSeek-V4-Flash||GLM-5.3": 342,
+  "DeepSeek-V4-Flash||Kimi-K3": 400,
+  "DeepSeek-V4-Flash||Agnes-2.5-Flash": 398,
+  "DeepSeek-V4-Flash||Agnes-3.0-Flash": 400,
+  "DeepSeek-V4.1-Flash||DeepSeek-V4-Pro": 400,
+  "DeepSeek-V4.1-Flash||GLM-5.3": 342,
+  "DeepSeek-V4.1-Flash||Kimi-K3": 400,
+  "DeepSeek-V4.1-Flash||Agnes-2.5-Flash": 398,
+  "DeepSeek-V4.1-Flash||Agnes-3.0-Flash": 400,
+  "DeepSeek-V4-Pro||GLM-5.3": 342,
+  "DeepSeek-V4-Pro||Kimi-K3": 400,
+  "DeepSeek-V4-Pro||Agnes-2.5-Flash": 398,
+  "DeepSeek-V4-Pro||Agnes-3.0-Flash": 400,
+  "GLM-5.3||Kimi-K3": 342,
+  "GLM-5.3||Agnes-2.5-Flash": 341,
+  "GLM-5.3||Agnes-3.0-Flash": 342,
+  "Kimi-K3||Agnes-2.5-Flash": 398,
+  "Kimi-K3||Agnes-3.0-Flash": 400,
+  "Agnes-2.5-Flash||Agnes-3.0-Flash": 398
+ },
+ "avg_kappa": {
+  "Qwen3.7-Flash": 0.45511043031055803,
+  "Qwen3.8-Flash": 0.5994696508758646,
+  "Qwen3.8-27B": 0.5584258625935745,
+  "Qwen3.8-Max": 0.5660618004366935,
+  "Qwen3.8-2.4T": 0.5890997786804328,
+  "DeepSeek-V4-Flash": 0.4693325370932888,
+  "DeepSeek-V4.1-Flash": 0.5541381202280836,
+  "DeepSeek-V4-Pro": 0.4285304674021367,
+  "GLM-5.3": 0.6044391975221873,
+  "Kimi-K3": 0.5829710097173483,
+  "Agnes-2.5-Flash": 0.5156382333377304,
+  "Agnes-3.0-Flash": 0.5367940190525706
+ },
+ "family_block_kappa": {
+  "Qwen-Qwen": 0.6172994434786528,
+  "Qwen-DeepSeek": 0.4382942930109393,
+  "Qwen-GLM": 0.6074115881675268,
+  "Qwen-Kimi": 0.5776509927580794,
+  "Qwen-Agnes": 0.5604126582503184,
+  "DeepSeek-Qwen": 0.4382942930109393,
+  "DeepSeek-DeepSeek": 0.5515932647553946,
+  "DeepSeek-GLM": 0.5662276567047745,
+  "DeepSeek-Kimi": 0.5768192853501305,
+  "DeepSeek-Agnes": 0.4431495936829048,
+  "GLM-Qwen": 0.6074115881675268,
+  "GLM-DeepSeek": 0.5662276567047745,
+  "GLM-Kimi": 0.7007068327162572,
+  "GLM-Agnes": 0.6061917145379232,
+  "Kimi-Qwen": 0.5776509927580794,
+  "Kimi-DeepSeek": 0.5768192853501305,
+  "Kimi-GLM": 0.7007068327162572,
+  "Kimi-Agnes": 0.5466307271668929,
+  "Agnes-Qwen": 0.5604126582503184,
+  "Agnes-DeepSeek": 0.4431495936829048,
+  "Agnes-GLM": 0.6061917145379232,
+  "Agnes-Kimi": 0.5466307271668929,
+  "Agnes-Agnes": 0.5040428741415334
+ },
+ "open_open_mean_kappa": 0.543496648616129,
+ "open_proprietary_mean_kappa": 0.528433451400512,
+ "test_retest": {
+  "Qwen3.7-Flash": {
+   "retest_agreement": 0.85,
+   "ci": [
+    0.7380952380952381,
+    0.9487499999999998
+   ],
+   "n": 40
+  },
+  "Qwen3.8-Flash": {
+   "retest_agreement": 0.85,
+   "ci": [
+    0.75,
+    0.9487179487179487
+   ],
+   "n": 40
+  },
+  "Qwen3.8-27B": {
+   "retest_agreement": 0.975,
+   "ci": [
+    0.926829268292683,
+    1.0
+   ],
+   "n": 40
+  },
+  "Qwen3.8-Max": {
+   "retest_agreement": 0.95,
+   "ci": [
+    0.8717948717948718,
+    1.0
+   ],
+   "n": 40
+  },
+  "DeepSeek-V4-Flash": {
+   "retest_agreement": 0.9,
+   "ci": [
+    0.7948717948717948,
+    0.975609756097561
+   ],
+   "n": 40
+  },
+  "DeepSeek-V4.1-Flash": {
+   "retest_agreement": 0.825,
+   "ci": [
+    0.7044318181818182,
+    0.926829268292683
+   ],
+   "n": 40
+  },
+  "DeepSeek-V4-Pro": {
+   "retest_agreement": 0.75,
+   "ci": [
+    0.6097560975609756,
+    0.8717948717948718
+   ],
+   "n": 40
+  },
+  "Kimi-K3": {
+   "retest_agreement": 0.9,
+   "ci": [
+    0.7948717948717948,
+    0.9761904761904762
+   ],
+   "n": 40
+  }
+ },
+ "panels": {
+  "k3": {
+   "panel_acc_mean": 0.84703706916493,
+   "panel_acc_ci": [
+    0.8035976974736169,
+    0.8867924528301887
+   ],
+   "panel_pb_mean": 0.03532331155261557,
+   "panel_pb_ci": [
+    0.0,
+    0.06896551724137934
+   ]
+  },
+  "k3_all12": {
+   "panel_acc_mean": 0.8476573703517217,
+   "panel_acc_ci": [
+    0.7966101694915254,
+    0.8867924528301887
+   ],
+   "panel_pb_mean": 0.029598274775421547,
+   "panel_pb_ci": [
+    -0.009433962264150941,
+    0.06666666666666665
+   ]
+  },
+  "k5": {
+   "panel_acc_mean": 0.8461788358094102,
+   "panel_acc_ci": [
+    0.8113207547169812,
+    0.8846153846153846
+   ],
+   "panel_pb_mean": 0.037835509158158746,
+   "panel_pb_ci": [
+    0.0,
+    0.06666666666666665
+   ]
+  },
+  "k5_all12": {
+   "panel_acc_mean": 0.8479873145498122,
+   "panel_acc_ci": [
+    0.8135593220338984,
+    0.8727272727272727
+   ],
+   "panel_pb_mean": 0.03386128052614262,
+   "panel_pb_ci": [
+    0.0,
+    0.06666666666666665
+   ]
+  }
+ },
+ "single_judge_acc_mean": 0.5871212121212122,
+ "single_judge_abs_pb_mean": 0.05791226166348346,
+ "best_single_open_acc": 0.7121212121212122,
+ "best_single_open_name": "Qwen3.8-Flash",
+ "logit_full": {
+  "n": 1628,
+  "coef": {
+   "const": 0.17747157860186455,
+   "len_diff": -0.46005190715653976,
+   "kin_side": -0.28949039888813816,
+   "quality_diff": 1.6047123948501805
+  },
+  "p": {
+   "const": 0.0014307083114562993,
+   "len_diff": 3.3629750125588243e-18,
+   "kin_side": 0.0001934994914580263,
+   "quality_diff": 9.556513035245762e-35
+  },
+  "ci": {
+   "const": [
+    0.06837618821488747,
+    0.2865669689888416
+   ],
+   "len_diff": [
+    -0.5637117437085372,
+    -0.35639207060454237
+   ],
+   "kin_side": [
+    -0.44171380959272966,
+    -0.13726698818354663
+   ],
+   "quality_diff": [
+    1.3489167067021466,
+    1.8605080829982144
+   ]
+  }
+ },
+ "logit_fe": {
+  "n": 1628,
+  "coef": {
+   "len_diff": -0.46296673444104197,
+   "kin_side": -0.2864593244284833,
+   "quality_diff": 1.6189463200944532
+  },
+  "p": {
+   "len_diff": 3.656993936271704e-18,
+   "kin_side": 0.000248306563194833,
+   "quality_diff": 6.34367724633701e-35
+  }
+ },
+ "kin_wrong_table": [
+  [
+   "Qwen3.7-Flash",
+   0.09523809523809523,
+   [
+    0.0,
+    0.25
+   ],
+   21
+  ],
+  [
+   "Qwen3.8-Flash",
+   0.0,
+   [
+    0.0,
+    0.0
+   ],
+   19
+  ],
+  [
+   "Qwen3.8-27B",
+   0.10526315789473684,
+   [
+    0.0,
+    0.2631578947368421
+   ],
+   19
+  ],
+  [
+   "Qwen3.8-Max",
+   0.05555555555555555,
+   [
+    0.0,
+    0.2
+   ],
+   18
+  ],
+  [
+   "Qwen3.8-2.4T",
+   0.0,
+   [
+    0.0,
+    0.0
+   ],
+   19
+  ],
+  [
+   "GLM-5.3",
+   0.2727272727272727,
+   [
+    0.0625,
+    0.626041666666661
+   ],
+   11
+  ],
+  [
+   "Kimi-K3",
+   0.3333333333333333,
+   [
+    0.0,
+    0.75
+   ],
+   9
+  ]
+ ]
+}
