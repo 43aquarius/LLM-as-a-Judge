@@ -1,0 +1,14 @@
+{
+ "per_judge": {
+  "Kimi-K3": {
+   "n": 40,
+   "agreement": 0.875
+  },
+  "Qwen3.8-27B": {
+   "n": 40,
+   "agreement": 0.925
+  }
+ },
+ "decision": "PASS",
+ "median_latency_s": 2.68
+}

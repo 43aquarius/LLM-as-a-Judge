@@ -1,0 +1,1078 @@
+\documentclass[review,12pt]{elsarticle}
+
+%% ---- page style patch: avoids elsarticle preprint-footer overfull box ----
+\makeatletter
+\def\ps@pprintTitle{%
+  \let\@oddhead\@empty\let\@evenhead\@empty
+  \def\@oddfoot{\footnotesize\hfill\thepage\hfill}%
+  \let\@evenfoot\@oddfoot}
+\makeatother
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{xcolor}
+\usepackage[
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=darkgray,
+  urlcolor=blue,
+  bookmarks=true,
+  bookmarksnumbered=true,
+  unicode=true
+]{hyperref}
+
+\usepackage{natbib}
+\bibliographystyle{elsarticle-num}
+
+\setlength{\parskip}{0pt}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Free and Fair? A Zero-Cost Audit of Reliability and Bias
+       in Free-Tier LLM Judges across Families and Tiers}
+
+\author[dlut]{Chang Tan}
+\address[dlut]{Dalian University of Technology, Dalian 116024, China}
+
+\begin{abstract}
+Free-tier LLM APIs make large-language-model judges accessible to any
+budget, yet the reliability of these freely usable referees is largely
+uncharacterised. We audit ten open-weight judges served on a single free
+API tier, drawn from four model families
+(Qwen, DeepSeek, GLM, Kimi) plus two proprietary free-tier references
+under one protocol: 400 answer pairs spanning mathematics, factual QA,
+creative writing, and abstract explanation, each judged in both
+presentation orders, with a test--retest subset and ground-truth-controlled
+family-preference probes, followed by a pre-registered confirmatory battery,
+all at zero monetary cost. out. First, severity collapse: DeepSeek flash and flagship judges abstain
+with ties on 47--59\% of ground-truth-clear pairs, dragging their accuracy
+as low as 0.32; a forced-choice prompt revision eliminates the abstentions
+entirely, so the collapse is prompt-contingent rather than model-intrinsic.
+Second, instruction insensitivity: in a four-arm prompt ablation (original
+rubric, no anti-verbosity sentence, softened, length-normalised) the
+longer-answer pick rate stays at 0.48 across all arms (interaction
+$p=0.93$), and the pooled anti-length tilt does not survive question-level
+clustering, so the initial pass's ``instruction backfire'' is reclassified
+as a fragile descriptive pattern. Third, family-specific kinship: in the
+main pass Qwen judges significantly avoid same-family answers (regression
+$-0.64$, $p=2\times10^{-4}$) while GLM rewards them ($+1.10$,
+$p=1\times10^{-4}$); on new, harder verifiable tasks the family-level
+effect does not replicate, with only a small-sample Kimi self-effect
+remaining (33\% versus 2\% baseline, $n=12$, exploratory). Fourth, panels
+are decisiveness instruments, not debiasing ones: majority voting cuts
+abstention from 30\% to 14--18\% at flat decision quality while leaving the
+shared position-bias component unchanged, so order swapping remains
+necessary. We distill the results into six deployment guidelines and
+release the complete artifact---questions, prompts, 9,453 main-pass
+verdicts, 1,815 robustness-experiment verdicts, 560 verified answers on
+140 new tasks, and analysis code---so the audit can be re-run as free-tier catalogues evolve.
+\end{abstract}
+
+\begin{keyword}
+LLM-as-a-Judge \sep evaluation reliability \sep position bias \sep
+self-preference bias \sep free-tier models
+\end{keyword}
+
+\end{frontmatter}
+
+%% ==================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Large language models (LLMs) are increasingly asked not only to produce
+answers but also to grade them. The LLM-as-a-Judge paradigm, in which a model
+compares or scores candidate responses in place of human annotators, has
+become a workhorse of modern language technology. It powers public leaderboards
+built on pairwise comparison \citep{zheng2023judging}, substitutes for human
+preference labels in instruction tuning pipelines, and provides cheap
+regression tests for retrieval-augmented systems, agents, and text generation
+services \citep{liu2023geval,gu2024survey}. As the scale of evaluation grows
+far beyond what human rating budgets can cover, the quality of machine
+judgement itself has become a first-order scientific question.
+
+The dominant practice rests on a small set of closed, frontier models such as
+GPT-4 and Claude. This reliance carries well-known costs: per-token fees that
+grow linearly with evaluation volume, restricted data governance, and
+reproducibility risks when a provider silently updates a checkpoint. Open
+models offer an appealing alternative. Their weights are public or freely
+hosted, and several providers expose capable open families through zero-cost
+API tiers, which makes them attractive to academic groups and small
+engineering teams. Whether these freely accessible models can actually serve
+as dependable judges, however, remains poorly characterized. Existing bias
+studies concentrate on closed judges from a handful of providers
+\citep{zheng2023judging,chen2024humans,norman2026reliability}, and the
+largest recent audit of 21 judges covers nine commercial providers while
+leaving open-weight families at the periphery. Openness does not imply
+neutrality: a judge trained by the same organization that produced some of the
+candidates may share stylistic priors, tokenization habits, or even training
+data with those candidates, which creates a structural risk of family
+favoritism that earlier self-recognition studies only partially capture
+\citep{panickssery2024llm}.
+
+This paper presents a systematic anatomy of reliability and bias for
+freely accessible LLM judges. We assemble ten free-tier judges---open-weight
+checkpoints reached through a single zero-cost API tier---drawn from
+four model families (Qwen, DeepSeek, GLM, and Kimi), spanning multiple
+capability tiers within each family, and complement them with two proprietary
+free-tier judges (Agnes-2.5-Flash and Agnes-3.0-Flash) as a reference group,
+evaluating all of them under one unified protocol. Five generators, one per
+family plus a second Qwen tier, answer 200
+questions from four domains: grade-school mathematics with verifiable ground
+truth \citep{cobbe2021training}, adversarial factual QA with reference answers
+\citep{lin2022truthfulqa}, open-ended creative writing, and abstract
+explanation. From these answers we construct 400 stratified answer pairs, and
+every judge scores every pair in both presentation orders, yielding
+9,453 usable verdicts, with an additional test-retest subset of
+640 repeated judgements on the open judges to probe stochastic
+stability.
+
+The design isolates four bias families with matched measurements for every
+judge. Position bias is measured directly by comparing verdicts on swapped
+presentation orders, length bias by the conditional win rate of the longer
+answer, accuracy on ground-truth-clear pairs in the two verifiable domains,
+and family preference by a quality-controlled protocol that tracks how often
+a judge rewards a same-family answer when the reference answer proves that
+answer wrong. Inter-judge structure is summarized by pairwise Cohen's kappa
+\citep{cohen1960coefficient}, and all headline estimates carry question-level
+cluster bootstrap confidence intervals.
+
+Four findings structure the results. \emph{Severity collapse}: the
+DeepSeek flash and flagship judges return ties on 47--59\% of
+ground-truth-clear pairs, silencing their discrimination and pushing
+ground-truth accuracy below chance, a failure mode invisible to compliance
+checks; a forced-choice prompt revision removes the abstentions entirely,
+so the collapse is prompt-contingent. \emph{Instruction insensitivity}:
+across a four-arm prompt ablation the longer-answer pick rate moves only
+between 0.476 and 0.490, the original-versus-no-sentence interaction is
+noise ($p=0.93$), and no per-judge length coefficient survives Holm
+correction, so the initial pass's anti-length tilt is reclassified as a
+fragile descriptive pattern rather than an instruction effect.
+\emph{Lineage-specific kinship}: in the main pass, Qwen judges avoid
+same-family answers (kin-win 37\%, regression $-0.64$,
+$p=2\times10^{-4}$) while GLM-5.3 rewards its own family's answers
+($+1.10$, $p=1\times10^{-4}$); on new, harder verifiable tasks
+(competition mathematics, unit-tested code, multiple choice) the
+family-level effect does not replicate, and only a small-sample Kimi
+self-effect persists (33\% versus 2\% baseline, $p=0.006$, $n=12$,
+exploratory). \emph{Panels are decisiveness instruments}: majority voting
+cuts abstention from 30\% to 14--18\% at flat decision quality (0.834
+versus 0.847) while passing the shared position-bias component through
+unchanged, so order swapping remains necessary.
+
+Beyond measurement, we translate the findings into deployment guidance for
+practitioners who cannot afford commercial judge APIs. We quantify how
+majority panels of three or five open judges trade compute for accuracy and
+bias robustness, revisit the order-swapping protocol as a cheap debiasing
+device, and identify which free-tier models are safe to use as referees for
+which kinds of tasks. All prompts, question sets, raw verdicts, and analysis
+code are released with the paper to support reuse.
+
+Our contributions are fourfold. First, we provide a reusable, zero-cost
+audit protocol---released question sets, probes, and screening
+thresholds---together with the first multi-family, multi-tier study of
+judging reliability for freely accessible LLM judges, covering four bias
+families under one protocol and contrasting
+open-weight judges with proprietary free-tier references. Second, we
+introduce a quality-controlled kin-preference measurement that separates
+family favoritism from genuine quality differences. Third, we give
+within-family tier-gradient evidence on order stability that links judge
+behaviour to model tier and serving configuration rather than to family
+identity alone. Fourth, we distill the results
+into concrete, near-zero-cost judging guidelines and release the complete
+experimental artifact so the audit can be re-run as free-tier catalogues
+evolve.
+
+%% ==================================================================
+\section{Related Work}
+\label{sec:related}
+
+\subsection{LLM-as-a-Judge}
+Using LLMs to evaluate text quality was popularized by G-Eval, which framed
+NLG scoring as a probability-weighted form-filling task with chain-of-thought
+\citep{liu2023geval}, and by MT-Bench, which established pairwise comparison
+with a reference-guided rubric as the default protocol and reported the first
+catalogue of judge failure modes \citep{zheng2023judging}. Subsequent surveys
+systematized the design space of judges, prompts, and aggregation schemes
+\citep{gu2024survey}. A complementary line of work trains open models
+specifically for evaluation: the Prometheus family fine-tunes open LLMs on
+human feedback to produce reproducible graders whose agreement with humans
+rivals that of general-purpose judges \citep{kim2024prometheus}. Our study
+differs in orientation: rather than proposing a new judge or benchmark, we
+audit the judging behaviour of off-the-shelf open models that practitioners
+can already call for free, since in practice most teams use unmodified
+chat models as referees rather than dedicated evaluator checkpoints.
+
+\subsection{Judgement Biases}
+Three bias families dominate the literature. Position bias, the tendency to
+favour whichever answer appears first (or last), was demonstrated early for
+GPT-4-class judges and motivates order-swapping or consistency-based
+mitigations \citep{zheng2023judging,wang2024fair,li2023split}. Verbosity bias,
+the correlation between answer length and preference, was documented in RLHF
+preference labels and in arena-style evaluation, and motivated
+length-controlled win rates \citep{singhal2024long,dubois2024length}.
+Self-preference is the subtler tendency of a judge to favour its own
+generations: evaluators have been shown to recognize their own text and to
+reward it, even when the text carries a hidden watermark that the judge
+cannot consciously detect \citep{panickssery2024llm}. Comparative studies of
+human and machine judges further show that some biases, such as
+self-preference and conformity to anchor answers, are shared by humans and
+LLMs, while others, such as opinionatedness, differ sharply
+\citep{chen2024humans}. We generalize the self-preference lens from the
+individual model to the model family: because several providers ship many
+tiers of the same base model, a practical question is whether a judge favours
+any member of its own lineage, which we measure with ground-truth controls.
+
+\subsection{Reliability, Validity, and Judge Panels}
+A growing body of work asks whether judges agree at all. Cross-judge
+agreement with humans is often modest and task-dependent
+\citep{hosking2023human,bavaresco2024llms}. A recent large-scale audit of 21
+judges from nine providers reports that exact-match agreement overstates
+discriminative ability relative to Cohen's kappa, that judge rankings are
+unstable across benchmarks, and that high test-retest reliability can coexist
+with severe position bias \citep{norman2026reliability}. Infrastructure work
+such as JudgeArena unifies judge benchmarks and ships tuned configurations
+for open judges \citep{lushtaku2026judgearena}. On the mitigation side,
+panels of diverse judges have been proposed to average away idiosyncratic
+errors \citep{verga2024replacing}, though correlated errors within panels can
+undermine the diversity argument. Our contribution to this line is a
+family-and-tier-resolved view of agreement structure among free judges, plus
+a panel analysis that respects family boundaries, so that panel gains are not
+confounded by kinship.
+
+%% ==================================================================
+\section{Experimental Setup}
+\label{sec:setup}
+
+\subsection{Model Roster}
+\label{sec:roster}
+
+Table~\ref{tab:roster} lists the twelve judges and five generators. The ten
+open-weight judges are served through a single OpenAI-compatible endpoint
+(Alibaba Cloud Model Studio free tier) under identical API settings, which
+removes serving differences as a confound. The open roster spans four
+families: five Qwen checkpoints covering two flash generations, a 27B mid
+tier, a max tier, and a 2.4T-parameter Mixture-of-Experts flagship
+\citep{qwen2025qwen3}; three DeepSeek checkpoints covering two flash tiers
+and a pro tier \citep{deepseek2024v3}; the GLM-5.3 flagship \citep{glm2024chatglm};
+and Kimi-K3 \citep{kimi2025k2}. The same five
+generators produce candidate answers, one flagship per family plus a second,
+deliberately smaller Qwen tier so that within-family quality variance exists
+for the kinship analysis. Two judges (Qwen3.8-2.4T and GLM-5.3)
+are served with mandatory reasoning, a platform restriction of the free tier;
+we account for this when interpreting their behaviour, and treat
+\emph{thinking mode} as an observational variable rather than a confound to
+be hidden.
+
+Beyond the open roster, we add two proprietary judges, Agnes-2.5-Flash and
+Agnes-3.0-Flash, accessed through their public API on the provider's
+zero-priced promotional tier. These models give a proprietary reference
+point against which the open judges can be read; they see the identical
+judging prompt, but their serving platform injects undisclosed
+system-level instructions ahead of it (observed as roughly 300--600 extra
+prompt tokens per call), so their absolute metrics are indicative rather
+than strictly comparable, a caveat we revisit in Section~\ref{sec:limitations}.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Model roster. Judges evaluate all 400 answer pairs in both orders;
+generators produce the candidate answers. Tier gives the capability level
+within the family (F = flash/entry, M = mid, P = flagship/prime). Thinking
+indicates whether the serving platform enables a reasoning phase that cannot
+be disabled. Agnes judges are proprietary free-tier references (see text).}
+\label{tab:roster}
+\begin{tabular}{llllc}
+\toprule
+Model & Family & Tier & Role & Thinking \\
+\midrule
+Qwen3.7-Flash (0715)  & Qwen     & F & judge & no  \\
+Qwen3.8-Flash         & Qwen     & F & judge + generator & no  \\
+Qwen3.8-27B           & Qwen     & M & judge & no  \\
+Qwen3.8-Max (0902)    & Qwen     & P & judge + generator & no  \\
+Qwen3.8-2.4T-A95B     & Qwen     & P+ & judge & yes \\
+\midrule
+DeepSeek-V4-Flash (0731) & DeepSeek & F & judge & no  \\
+DeepSeek-V4.1-Flash   & DeepSeek & F & judge & no  \\
+DeepSeek-V4-Pro (0813)& DeepSeek & P & judge + generator & no  \\
+\midrule
+GLM-5.3               & GLM      & P & judge + generator & yes \\
+Kimi-K3               & Kimi     & P & judge + generator & no  \\
+\midrule
+Agnes-2.5-Flash       & Agnes\textsuperscript{p} & F & judge & managed \\
+Agnes-3.0-Flash       & Agnes\textsuperscript{p} & F+ & judge & managed \\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize \textsuperscript{p}Proprietary judges, served via their own API.}
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_framework_vector.png}
+\caption{Overview of the evaluation pipeline. Two hundred questions from four
+domains are answered by five generators from four model families; stratified
+pair construction yields 400 answer pairs including 66 ground-truth-clear
+pairs, and twelve judges---ten open-source and two proprietary---evaluate
+every pair in both presentation orders,
+enabling direct measurement of position bias, length bias, family preference,
+accuracy, and inter-judge agreement.}
+\label{fig:framework}
+\end{figure}
+
+\subsection{Task Domains and Questions}
+\label{sec:domains}
+
+We evaluate on 200 questions, 50 per domain, chosen to combine verifiable
+and open-ended tasks. Mathematics uses grade-school word problems from the
+GSM8K test split, each with a certified numeric answer
+\citep{cobbe2021training}. Knowledge uses TruthfulQA questions, which probe
+common misconceptions and carry reference answers
+\citep{lin2022truthfulqa}; this domain is deliberately adversarial so that
+generators exhibit meaningful quality differences. Creative writing consists
+of 50 fixed prompts covering stories, poems, letters, and other open-ended
+formats, authored for this study and released with the code. Abstract
+explanation takes 50 recent computer-science abstracts retrieved from arXiv
+and asks for a plain-language, three-sentence explanation. The two verifiable
+domains enable objective accuracy measurement, while the two open-ended
+domains measure agreement where no ground truth exists, mirroring the
+conditions under which judges are most often deployed in practice.
+
+\subsection{Correctness Labelling}
+\label{sec:labels}
+
+Answer correctness in the verifiable domains is determined in two stages.
+An initial pass labels at generation time: mathematics by extracting the
+final numeric answer with a regular expression (falling back to the last
+numeral in the text) and comparing it with the certified GSM8K answer
+under strict string equality, and knowledge by a tolerant
+keyword-containment heuristic against the TruthfulQA reference answer. A
+second pass refines both domains. For mathematics, the same extraction is
+retained but comparison switches to numeric equality after normalization,
+so that surface forms such as \$162, \$162.00, and 162 are treated as
+equal; this stage is fully deterministic and involves no language model,
+and it changed 8.4\% of mathematics labels relative to the string-equality
+pass. For knowledge, each candidate answer is graded by a free-tier
+labelling model (Qwen3.7-Flash) that sees the question, the TruthfulQA
+reference answer, and the candidate answer, and returns a binary
+CORRECT/INCORRECT verdict with a one-sentence rationale at temperature
+zero; relative to the keyword heuristic this labeller changed 28.8\% of
+knowledge labels, and manual spot checks confirmed the changes were
+almost always improvements.
+
+We flag a circularity risk that this revision addresses directly: the
+knowledge labeller, Qwen3.7-Flash, is also a member of the judge panel,
+so the knowledge labels that define ground-truth-clear pairs partly
+reflect the judgement of one model that is itself evaluated against them.
+Three mitigations apply. First, mathematics labels are fully deterministic
+and provide a conservative, circularity-free viewpoint: per-judge accuracy
+on mathematics ground-truth-clear pairs spans 0.11--0.60, notably below
+the pooled figures. Second, the revised protocol replaces the single
+labeller with two labellers from families outside the judge panel plus
+human adjudication of disagreements, reporting labeller agreement against
+the human gold standard. Third, all 66 ground-truth-clear pairs, including
+every label that changed between the two stages, are released in a
+human-verification worksheet with the full evidence trail.
+
+\subsection{Pair Construction}
+\label{sec:pairs}
+
+From the five generators' answers we form answer pairs by stratified
+sampling over the ten possible generator pairings. In the two verifiable
+domains we draw three pairs per question and preferentially pair a wrong
+answer against a correct one whenever the generators disagree under the
+correctness screen, which maximizes pairs with an objective quality
+difference; in the two
+open-ended domains we draw one pair per question in round-robin rotation.
+This produces 400 pairs in total, with every generator pairing occurring
+between 34 and 47 times. The presentation order of each pair is randomized
+once, and the judging protocol then evaluates every pair in both orders,
+which turns each pair into its own position-bias probe. In the verifiable
+domains, a pair is ground-truth-clear when exactly one side is labelled
+correct by the criteria of Section~\ref{sec:labels}; 25\% of mathematics pairs and 19\% of knowledge pairs are
+ground-truth-clear (66 pairs in total);
+and only these pairs enter accuracy and kin-preference analyses. Pair
+membership is fixed and released with the artifact, and all reported
+ground-truth quantities use the final labels.
+
+\subsection{Judging Protocol}
+\label{sec:protocol}
+
+Judges receive an MT-Bench-style rubric: an impartial-evaluator system
+message, the question, optionally the reference answer (for the verifiable
+domains only), and the two candidate answers labelled Assistant A and
+Assistant B. The prompt instructs the judge to weigh correctness,
+completeness, clarity, and instruction following, explicitly warns against
+rewarding length, and requires a one- or two-sentence justification followed
+by a machine-parseable verdict token: [[A]], [[B]], or [[C]] for a tie. Every
+judge evaluates every pair in both presentation orders at temperature zero,
+so any order-induced verdict change is attributable to position rather than
+sampling noise. Coverage is bounded by each model's free quota: two open
+judges exhausted theirs near the end of the main pass, and exact per-judge
+coverage is reported in Section~\ref{sec:results}. A stratified subset of 40 pairs (ten per domain) is judged
+twice more in the canonical order to measure test-retest stability. Verdicts
+are parsed by a strict bracket pattern with one reminder retry; the parse
+failure rate itself is reported as a compliance metric. To keep the judge
+input distribution uniform across domains, answers are capped at 900
+characters and questions at 1{,}500 characters with an explicit truncation
+marker, a setting applied identically to every judge. The cap binds often:
+76\% of knowledge answers, 56\% of creative answers, and 15\% of
+mathematics answers exceed 900 characters, and for 11.6\% of mathematics
+answers the extracted final numeric answer falls beyond the visible
+window; length-based statistics are therefore reported with both the full
+and the judge-visible length, and a truncation-exclusion sensitivity
+analysis appears in the appendix.
+
+\subsection{Metrics}
+\label{sec:metrics}
+
+For each judge we compute the following quantities, all with 95\%
+question-level cluster bootstrap confidence intervals over 2{,}000
+resamples. Parse rate is the fraction of judgements that yield a valid
+verdict token. Tie rate is the fraction of canonical-order verdicts equal to
+[[C]]. Accuracy is computed on ground-truth-clear pairs as the fraction of
+verdicts that select the objectively correct side. Position bias contrasts
+the rate at which the first-presented answer wins among non-tie verdicts
+against the 0.5 null; the flip rate is the fraction of pairs whose
+canonically-mapped verdict differs between the two presentation orders.
+Length bias is the rate at which the longer answer wins among non-tie
+verdicts minus 0.5. Family preference is measured on kin pairs, where
+exactly one side comes from the judge's own family: the headline statistic
+is the kin-wrong pick rate, the fraction of ground-truth-clear kin pairs in
+which the judge selects its own family's answer although the reference
+answer proves it wrong. Inter-judge agreement uses pairwise Cohen's kappa on
+the three-class verdicts of canonical-order judgements
+\citep{cohen1960coefficient}. A pooled logistic regression with judge fixed
+effects estimates the simultaneous effects of length difference, kinship,
+and an answer-quality difference indicator (derived from the correctness
+labels, so that both-correct and both-wrong pairs also inform the length and
+kinship coefficients) on the probability that Assistant A wins, providing a
+multivariate check on the univariate rates.
+
+\subsection{Zero-Cost Constraint}
+\label{sec:free}
+
+The entire study runs on free API quotas with hard spending protection
+enabled: every open-weight model is capped at its complimentary
+one-million-token allocation, after which the provider rejects further calls
+instead of billing them, and the two proprietary judges run on their
+provider's zero-priced promotional flash tier under platform rate limits.
+Token consumption was logged per model throughout, and the
+total footprint of the experiment, 8.4 million tokens across roughly
+11,700 API calls, stayed within the complimentary budget. This
+constraint is not merely logistical; it demonstrates that a full
+multi-family judge audit is reproducible by any research group at zero
+monetary cost, which we view as part of the contribution.
+
+%% ==================================================================
+\section{Results}
+\label{sec:results}
+
+Two free-quota exhaustions shape the coverage picture and are reported
+transparently. GLM-5.3 exhausted its complimentary allocation after 714 of
+800 main-pass judgements (89\%; its coverage is complete for mathematics and
+nearly complete for knowledge, the two verifiable domains), and
+Qwen3.8-2.4T completed 782 of 800 (98\%); both models could not participate
+in the test-retest subset, which therefore covers eight open judges. All
+remaining judges have complete coverage. Agreement statistics use
+pairwise-available pairs, so partial coverage degrades precision rather than
+introducing selection bias into the headline metrics. In total the study
+collected 9,453 usable main-pass verdicts and 640 test-retest verdicts.
+The proprietary judges completed the main pass in full, but their retest
+pass was curtailed by platform rate limits and is excluded from headline
+test-retest statistics; the raw partial records are released with the
+artifact for transparency.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Per-judge summary on the main pass. Tie is the rate of [[C]]
+verdicts in canonical order; Acc is accuracy on the 66 ground-truth-clear
+pairs with ties counted as errors (the artifact adds the ties-excluded and
+ties-as-half conventions); PB is position bias (first-win rate among
+non-ties minus 0.5; under the two-way convention the Holm-significant
+first-position leans are Qwen3.7-Flash $+0.093$, Qwen3.8-Flash $+0.069$,
+Qwen3.8-27B $+0.139$, and DeepSeek-V4.1-Flash $+0.128$, with
+Qwen3.8-2.4T at $-0.037$ showing last-position preference); Flip is the
+order-swap verdict-flip rate; LB is length bias (longer-answer win rate
+among non-ties minus 0.5; no per-judge LB value survives Holm correction,
+so the column is descriptive); $\kappa$ is the mean pairwise Cohen's
+kappa against the other judges; Retest is intra-session test--retest
+agreement on the repeated subset (``--'' where the model exhausted its
+free quota or platform rate limits curtailed the retest; cross-session
+values from the robustness battery appear in
+Section~\ref{sec:robust}).}
+\label{tab:summary}
+\begin{tabular}{lccccccc}
+\toprule
+Judge & Tie & Acc & PB & Flip & LB & $\kappa$ & Retest \\
+\midrule
+Qwen3.7-Flash & 0.15 & 0.71 & 0.075 & 0.32 & $-$0.072 & 0.46 & 0.85 \\
+Qwen3.8-Flash & 0.29 & 0.71 & 0.065 & 0.26 & $-$0.082 & 0.60 & 0.85 \\
+Qwen3.8-27B & 0.24 & 0.65 & 0.113 & 0.31 & $-$0.083 & 0.56 & 0.97 \\
+Qwen3.8-Max & 0.24 & 0.64 & $-$0.013 & 0.20 & $-$0.063 & 0.57 & 0.95 \\
+Qwen3.8-2.4T & 0.31 & 0.70 & $-$0.028 & 0.13 & $-$0.099 & 0.59 & -- \\
+DeepSeek-V4-Flash & 0.50 & 0.42 & 0.043 & 0.29 & 0.048 & 0.47 & 0.90 \\
+DeepSeek-V4.1-Flash & 0.44 & 0.56 & 0.146 & 0.28 & $-$0.034 & 0.55 & 0.82 \\
+DeepSeek-V4-Pro & 0.59 & 0.32 & 0.070 & 0.25 & 0.112 & 0.43 & 0.75 \\
+GLM-5.3 & 0.47 & 0.61 & 0.019 & 0.14 & $-$0.124 & 0.60 & -- \\
+Kimi-K3 & 0.44 & 0.50 & 0.042 & 0.25 & $-$0.051 & 0.58 & 0.90 \\
+\midrule
+Agnes-2.5-Flash$^{p}$ & 0.44 & 0.62 & $-$0.052 & 0.27 & $-$0.150 & 0.52 & -- \\
+Agnes-3.0-Flash$^{p}$ & 0.28 & 0.61 & $-$0.030 & 0.33 & $-$0.057 & 0.54 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Compliance and Decision Severity}
+\label{sec:res-compliance}
+
+Instruction compliance is nearly universal: eleven of twelve judges parse
+successfully on at least 99\% of calls, and the only notable exception is
+GLM-5.3 at 94.4\%, whose mandatory reasoning phase occasionally consumes the
+reply budget before the verdict token is emitted; the one-reminder parse
+retry is invoked on only 1.2\% of calls overall, rising to 9.4\% for
+GLM-5.3. Compliance, however, is
+the weakest notion of reliability. Decision severity---how often a judge
+commits to a winner at all---separates the panel far more sharply, and it
+separates by family. The five Qwen judges tie on 15--31\% of canonical-order
+pairs, whereas DeepSeek-V4-Flash and DeepSeek-V4-Pro tie on 50\% and 59\%
+respectively, GLM-5.3 on 47\%, and Kimi-K3 on 44\%. The two proprietary
+references bracket the open panel---Agnes-3.0-Flash ties on 28\% of pairs,
+Agnes-2.5-Flash on 44\%---so severity collapse is not an artifact of
+open-source models or of free tiers specifically; it is a
+serving-and-tuning choice that happens to differ systematically across
+providers. Because ties are excluded from conditional bias statistics and
+scored as errors in accuracy, this single parameter reshapes every downstream
+metric for the affected judges, as the following subsections show.
+
+\subsection{Ground-Truth Accuracy}
+\label{sec:res-acc}
+
+Figure~\ref{fig:accuracy} reports accuracy on the 66 ground-truth-clear
+pairs. The Qwen family forms the top cluster (0.64--0.71), with the two
+flash checkpoints ahead of the larger tiers; GLM-5.3 reaches 0.61 and
+Kimi-K3 0.50. The DeepSeek family splits: DeepSeek-V4.1-Flash achieves a
+usable 0.56, but DeepSeek-V4-Flash (0.42) and DeepSeek-V4-Pro (0.32) fall
+below the 0.5 chance line. DeepSeek-V4-Pro's below-chance score is a direct
+consequence of severity collapse: on 59\% of pairs it abstains with a tie,
+which the strict scoring counts as an error. Its 0.32 is thus best read as
+``right one time in three, silent most of the rest'' rather than as active
+misjudgement, and the same reading applies with less force to
+DeepSeek-V4-Flash. Within-family scale gradients are accordingly
+non-monotonic for DeepSeek (the flagship Pro tier is the \emph{worst} family
+member) and roughly flat for Qwen, so capability tier alone is a poor
+predictor of judging usefulness---a finding we return to in
+Section~\ref{sec:res-scale}.
+
+\subsection{Position Bias and Order Consistency}
+\label{sec:res-pb}
+
+Four open judges show a statistically significant first-position preference
+(bootstrap CI excluding 0.5): Qwen3.8-27B at $+0.113$ and
+DeepSeek-V4.1-Flash at $+0.146$ are the strongest, with the two flash Qwens
+just past the significance line ($+0.065$ to $+0.075$). The remaining
+judges sit near zero, including the two largest Qwen tiers
+($-0.013$ and $-0.028$). Average position bias is therefore mild by the
+standards of early GPT-4-class reports, but the order-swap flip rates
+expose substantial hidden instability: between 12.5\% and 32\% of pairs
+receive different canonical verdicts when the presentation order is
+swapped. Two judges served with mandatory reasoning are the most
+order-stable (Qwen3.8-2.4T at 0.125, GLM-5.3 at 0.138), and within the
+Qwen family the flip rate falls with tier (0.32 and 0.26 for the two
+flash generations, 0.20--0.31 for the mid and max tiers, 0.13 for the
+2.4T flagship). Scale and
+thinking mode thus buy consistency rather than calibration.
+
+\subsection{Length Bias and the Anti-Verbosity Instruction}
+\label{sec:res-lb}
+
+The judging rubric explicitly instructs models not to reward length, and
+in the naive pooled model of the main pass eight of ten open judges tilt
+against the longer answer (length bias $-0.03$ to $-0.12$;
+DeepSeek-V4-Pro at $+0.112$ is the only meaningfully length-favouring
+judge, and the proprietary references show the same signature, one of them
+in amplified form). That tilt is fragile, however: under question-level
+clustering the pooled coefficient is $-0.46$ per 1{,}000 characters of
+full length difference ($p=0.022$) but $-0.63$ and non-significant
+($p=0.24$) for the length difference the judge actually sees, and none of
+the thirty per-judge length coefficients survives Holm correction. The
+robustness experiments (Section~\ref{sec:robust}) settle the causal
+question directly: across a four-arm prompt ablation---original rubric,
+rubric with the anti-verbosity sentence deleted, a softened variant, and a
+length-normalised variant---the longer-answer pick rate stays between
+0.476 and 0.490 and the original-versus-no-sentence interaction is noise
+($+0.05$, one-sided $p=0.93$). The anti-verbosity sentence neither causes
+nor corrects length behaviour on this benchmark; the apparent inversion of
+the verbosity bias should be read as a property of this roster and
+stimulus set, not of the instruction, and length behaviour must be probed
+directly with length-stratified pairs rather than managed by prompt
+editing.
+
+\subsection{Family Preference under Ground-Truth Control}
+\label{sec:res-kin}
+
+Figure~\ref{fig:kin} and Table~\ref{tab:summary} summarise kinship
+behaviour, and the headline is heterogeneity: kinship effects are
+family-specific rather than universal. Pooling judges within family, Qwen
+judges pick a same-family answer in only 37\% of non-tie kin pairs (CI
+$[0.31, 0.43]$, $n=950$)---a significant kin-\emph{avoidance} (regression
+$-0.64$, $p=2\times10^{-4}$)---while GLM-5.3 rewards its own family's
+answers ($+1.10$, $p=1\times10^{-4}$); DeepSeek and Kimi show no
+family-level effect in the main pass (Fisher $p=0.11$ and $0.16$). The
+quality-controlled statistic sharpens the contrast for the large cells and
+stays directional for the small ones: when the reference answer proves the
+kin side wrong, Qwen judges still choose it in only 5.2\% of cases
+($n=96$), GLM-5.3 in 27.3\% ($n=11$), and Kimi-K3 in 33.3\% ($n=9$); the
+GLM and Kimi kin-wrong samples are small, so we read them as directional
+evidence rather than precise estimates. GLM-5.3 is the sharpest
+illustration of preference overriding evidence: on the ground-truth-clear
+kin pairs where its own family is right it picks kin on every one, yet on
+those where its family is wrong it still picks kin more than one time in
+four, and the same pattern holds in the mathematics domain alone (kin-win
+0.857, $n=14$), which is free of the labeller circularity that affects the
+knowledge domain. These estimates pool family judges rather than
+individuals, and the pooled sign is a property of this roster's family mix,
+not a law of self-preference. The robustness experiments
+(Section~\ref{sec:robust}) test whether these signals replicate on new,
+harder verifiable tasks.
+
+\subsection{Agreement Structure}
+\label{sec:res-agree}
+
+Pairwise Cohen's kappa on canonical-order verdicts spans 0.27--0.72 with a
+median of 0.54 (Figure~\ref{fig:agreement})---moderate agreement, broadly
+in line with published audits of commercial judges. Three structural
+patterns stand out. First, the highest-agreement pairs sit within the Qwen
+family: the two Qwen3.8 flash generations agree at $\kappa=0.72$, and the
+max and 2.4T tiers at $0.70$; the strongest cross-family pairs reach the
+same level (Qwen3.8-2.4T with GLM-5.3 at $0.70$, GLM-5.3 with Kimi-K3 at
+$0.70$). The open judges agree with the proprietary references (mean
+$\kappa=0.53$) slightly less than they agree with each other ($0.54$), so
+proprietary status is neither a guarantee of a distinct viewpoint nor a
+privileged one. Second, the family-blocked means reveal a cross-family
+fault line between Qwen and DeepSeek ($\kappa=0.44$, the lowest open--open
+block) while GLM pairs strongly with Kimi ($0.70$) and with
+Agnes-2.5-Flash ($0.64$). Third, the judges whose severity collapsed are
+also the least agreeable ones: DeepSeek-V4-Pro's mean kappa of 0.43 and
+the minimum pair Qwen3.7-Flash versus DeepSeek-V4-Pro at 0.27 show that
+abstention behaviour, not disagreement about winners, is what most damages
+raw agreement statistics.
+
+\subsection{Test--Retest Stability}
+\label{sec:res-retest}
+
+Repeating a 40-pair subset in canonical order at temperature zero yields
+agreement between repeats of 0.75--0.97 across the eight open judges with
+remaining quota; with $n=40$ per judge these estimates carry wide
+intervals. DeepSeek-V4-Pro is the least self-consistent (0.75) and
+Qwen3.8-27B the most (0.97). For DeepSeek-V4-Pro the raw 0.75 mostly
+reflects the reproducibility of its abstentions: it is stable in returning
+ties, which inflates raw consistency while contributing nothing to
+discrimination, and its order-stability and decision quality are
+correspondingly weak. This decoupling of consistency from validity echoes
+recent multi-judge audits and cautions against using test--retest
+agreement alone as a certification of judge quality. The robustness
+experiments extend the measurement to a cross-session setting: a 60-pair
+retest conducted weeks after the main pass (Section~\ref{sec:robust})
+agrees with the original canonical verdicts at 0.85--0.92, comparable to
+the intra-session values, so temperature-zero stability persists across
+sessions for the judges with remaining quota.
+
+\subsection{Panel Behaviour: Accuracy Gains without Debiasing}
+\label{sec:res-panel}
+
+Figure~\ref{fig:panel} evaluates majority-vote panels of $k$ judges by
+exact enumeration over all $\binom{10}{3}=120$ and $\binom{10}{5}=252$
+combinations, scored under the unified convention (ties count as errors).
+A panel of three lifts ground-truth accuracy from a single-judge mean of
+0.582 (best single 0.712) to 0.696 (CI $[0.533, 0.845]$)---level with,
+not above, the best single judge---and five judges add a further $+0.029$
+to 0.725; panels drawn from all twelve judges including the proprietary
+references reach 0.693/0.721. The larger effect is on decisiveness:
+abstention falls from 30\% (the single-judge mean tie rate on
+ground-truth-clear pairs) to 17.8\% ($k=3$) and 14.3\% ($k=5$), while
+decision quality on the pairs where the panel commits stays flat (0.834
+single versus 0.846--0.847 panel). Panels are thus decisiveness
+instruments rather than accuracy miracles. Position bias, however, is
+neither amplified nor cancelled: on the same ground-truth-clear pair set,
+mean signed first-position preference is $+0.037$ for single judges,
+$+0.036$ for panels of three, and $+0.040$ for panels of five.
+Order-swap aggregation on top of the panel adds only $+0.011$ accuracy
+(0.707 versus 0.696) at higher abstention (0.194), so order swapping
+remains mandatory at the single-judge level while its marginal benefit
+above a panel is modest; panels should combine judges from different
+families and rely on
+aggregation.
+
+\subsection{Scale Trends within Families}
+\label{sec:res-scale}
+
+Figure~\ref{fig:scale} plots accuracy, absolute position bias, and flip
+rate against within-family tier. The Qwen family shows a clean and, to our
+knowledge, previously unreported gradient in \emph{consistency}: flip rate
+falls from 0.26--0.32 across the flash and mid tiers to 0.13 for the 2.4T
+flagship, while accuracy stays within a narrow 0.64--0.71 band. The DeepSeek family inverts the intuitive ordering: the
+Pro flagship is the least accurate and least agreeable family member
+because of severity collapse. Family identity and tuning choices dominate
+raw parameter count as determinants of judge behaviour, which is why the
+practical guidance of the next section keys on screening rather than on
+scale.
+
+%% ==================================================================
+%% ==================================================================
+\section{Robustness Experiments}
+\label{sec:robust}
+
+The revision adds a pre-registered confirmatory battery (analysis plan
+released with the artifact) that re-examines the headline claims under the
+same zero-cost constraint. All experiments reuse the main-pass prompt and
+truncation settings, and every call logs the model code, the
+platform-reported snapshot id, and the date. A snapshot-stability check
+first re-judged 20 stratified pairs from the main pass in both orders on
+two judges weeks after the original run: canonical-verdict agreement was
+0.875 (Kimi-K3) and 0.925 (Qwen3.8-27B), both above the pre-registered
+0.85 threshold, so main-pass and new data are pooled and the main-pass
+prompt arm serves as the ablation baseline.
+
+\paragraph{Instruction ablation (E1).}
+Four prompt arms---the original rubric (P1), the rubric with the
+anti-verbosity sentence deleted (P0), a softened variant (P2), and a
+length-normalised variant (P3)---were run on 60 length-stratified pairs
+covering all four domains with four judges from three families (720 new
+verdicts; the P1 arm reuses the main-pass canonical-order verdicts). The
+result is a clean negative: longer-answer pick rates are 0.481 (P1),
+0.490 (P0), 0.476 (P2), and 0.480 (P3); the P1-versus-P0 length
+interaction is $+0.05$ (one-sided $p=0.93$); and per-arm length
+coefficients span $-0.03$ to $+0.09$. The anti-verbosity sentence neither
+causes nor corrects length behaviour on this benchmark, and the main
+pass's anti-length tilt is accordingly reclassified as a fragile
+descriptive pattern (pooled clustering $p=0.022$ full-length, $p=0.24$
+judge-visible; no per-judge coefficient survives Holm).
+
+\paragraph{Tie ablation (E2).}
+Severity collapse was re-tested on 44 tie-prone pairs (selected before
+judging; by construction they contain no ground-truth-clear pair, which
+itself shows that ties concentrate on genuinely close answers) with four
+judges and two prompt revisions. Forcing a choice (T1: ``a tie is not an
+available verdict'') eliminates ties entirely for every judge (0.00
+versus 0.36--0.86 under the original rubric; exact McNemar, Holm
+$p\le 0.0002$). Tightening the definition of a tie (T2: ties only for
+substantive equivalence) removes the DeepSeek excess (0.50--0.61 versus
+0.82--0.86, Holm $p\le 0.003$) but leaves the Qwen judges unchanged
+(0.23--0.32, Holm $p\ge 0.22$). Severity collapse is therefore largely
+prompt-contingent, and the practical fix is a one-line prompt change
+rather than a different model.
+
+\paragraph{Harder verifiable tasks and kin replication (E3/E4).}
+To test the kinship signals on harder, fully verifiable material, 140 new
+tasks were built from competition mathematics (MATH Levels 4--5 with
+numeric answers), unit-tested code completion (HumanEval), and
+hard-subject multiple choice (MMLU); correctness is decided by frozen
+deterministic parsers and executed unit tests, with no LLM labeller
+anywhere in the loop. Four generators answered all tasks (560 verified
+answers; in the second batch a second Qwen generator model code with its
+own free allocation replaced a quota-exhausted one, logged per call), and
+93 ground-truth-clear pairs (50 Qwen-wrong, 31 DeepSeek-wrong, 12
+Kimi-wrong) were judged by four judges spanning the three families with
+remaining quota. The main-pass family-level signals do not replicate at
+this difficulty: kin-side error rates are 9.1\\% for Qwen judges versus a
+16.7\\% non-kin baseline (Fisher $p=0.18$) and 0\\% for DeepSeek versus
+7.7\\% ($p=0.25$); the self/brother decomposition shows no
+self-favouritism either (Qwen self 6.7\\% versus brother 10.1\\%). The
+single exception is Kimi, whose judges err on 4 of 12 kin-wrong pairs
+(33\\%) against a 2.3\\% baseline (Fisher $p=0.006$)---a small-sample
+signal we report as exploratory. The honest summary: family-level kin
+favouritism is weaker and less general than the main pass suggested; the
+main-pass evidence for GLM ($+1.10$) and Qwen ($-0.64$) stands as
+measured, but it does not transfer to harder verifiable tasks for the
+families we could re-test.
+
+\paragraph{Deployment without references (E5).}
+Removing the reference answer from the judging prompt changes nothing
+measurable for the judges with with-reference twins (27 and 24 pairs
+respectively): paired accuracy differences are 0.00 for both (95\\%
+cluster-bootstrap CIs $[-0.19, 0.19]$ and $[-0.13, 0.13]$), with tie
+rates moving by at most $+7$ points. A third judge without a
+with-reference twin shows 77.5\\% no-reference accuracy, consistent with
+the paired estimates. Free judges do not lean on the reference block for
+these verifiable domains.
+
+\paragraph{Cross-session stability (E8).}
+A 60-pair retest weeks after the main pass, on three judges with
+remaining quota, agrees with the original canonical verdicts at 0.85
+(DeepSeek-V4-Flash), 0.87 (DeepSeek-V4.1-Flash), and 0.92
+(Qwen3.8-27B)---level with the intra-session retest values despite the
+time gap.
+
+\paragraph{Not run.}
+Two planned experiments could not be completed under the zero-cost
+constraint and are reported as such rather than claimed: a paid
+commercial-anchor run (E7, estimated at 2--5 US dollars for 800 calls)
+was deferred because the account held insufficient balance, and the
+thinking-mode contrast (E9) is unavailable because both forced-thinking
+models exhausted their free quota. A de-identified human-annotation kit
+(110 pairs plus 10 calibration pairs, three-way protocol, three
+annotators) is released with the artifact; its labels were still pending
+at revision time, so all reliability claims in this paper remain at the
+judge--judge level.
+
+\section{Discussion and Practical Guidelines}\label{sec:discussion}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.72\textwidth]{figures/fig_accuracy.pdf}
+\caption{Ground-truth accuracy on the 66 ground-truth-clear pairs
+(canonical order), with question-level cluster bootstrap 95\% CIs. The
+dashed line marks chance. The proprietary Agnes references are shown in
+purple.}
+\label{fig:accuracy}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.78\textwidth]{figures/fig_bias.pdf}
+\caption{Bias trio per judge with 95\% CIs: position bias (top), order-swap
+flip rate (middle), and length bias (bottom). Dashed lines mark the
+unbiased null.}
+\label{fig:bias}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/fig_kin.pdf}
+\caption{Family preference for the ten open judges. Left: kin-wrong pick
+rate, the fraction of ground-truth-clear kin pairs in which the judge picks
+its own family's answer although the reference proves it wrong. Right:
+overall kin win rate among non-tie kin pairs (dashed line: 0.5).}
+\label{fig:kin}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.7\textwidth]{figures/fig_agreement.pdf}
+\caption{Pairwise Cohen's kappa between judges on canonical-order verdicts.
+Black grid lines separate model families.}
+\label{fig:agreement}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/fig_scale.pdf}
+\caption{Within-family trends across capability tiers for families with at
+least two tiers: ground-truth accuracy (left), absolute position bias
+(middle), and order-swap flip rate (right).}
+\label{fig:scale}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/fig_panel.pdf}
+\caption{Majority-vote panels of open judges: ground-truth accuracy (left)
+and mean signed position bias (right) for single judges and panels of three and
+five. Panels raise accuracy but pass the shared position component
+through essentially unchanged.}
+\label{fig:panel}
+\end{figure}
+
+The audit yields one message above all: \emph{free judges are usable, but
+only after screening, and never naively}. The properties that matter most
+are not the ones model cards advertise. Parameter count and flagship status
+predict neither accuracy nor severity; the DeepSeek Pro flagship is the
+least useful judge in the roster precisely because it abstains on most
+pairs, while a small flash checkpoint from the same provider discriminates
+better. What predicts behaviour is a combination of prompt contingency
+(severity), roster--stimulus properties (length), lineage (kinship,
+weakly), and deployment configuration (thinking mode for order
+stability). We distill the findings into six guidelines for zero-cost
+judging. We distill
+the findings into six guidelines for zero-cost judging.
+
+\paragraph{G1: Screen for severity collapse first---and fix it with the
+prompt.}
+Before deploying any free judge, run a twenty-pair probe with a known
+quality difference and measure the tie rate. On ground-truth-clear pairs
+the main-pass tie rates are 47\% (DeepSeek-V4-Flash) and 59\%
+(DeepSeek-V4-Pro), with GLM-5.3 (32\%) and Kimi-K3 (38\%) near the line
+as threshold observations. A judge that abstains on clearly-different
+pairs will undermine any downstream use that assumes
+discrimination---leaderboards, win-rate estimation, best-of-$n$
+selection---regardless of how sound its individual verdicts are. The tie
+ablation shows that the cheapest remedy is a prompt revision, not a
+different model: forcing a choice eliminates ties entirely (Holm
+$p\le 0.0002$), and tightening the tie definition removes the DeepSeek
+excess specifically.
+
+\paragraph{G2: Prefer Qwen Max and, where quota allows, the 2.4T
+flagship as workhorses.}
+Within this roster, Qwen3.8-Max and Qwen3.8-2.4T offer the best
+combination of hard-flip stability (0.117 and 0.060; hard flips change
+the canonical verdict, soft ones only convert ties to decisions) and
+clean position behaviour. Two caveats: 2.4T is served with mandatory
+reasoning, emits at the output cap on 17.8\% of calls, and consumed
+roughly double the tokens of the flash tiers, and both models' free-quota
+headroom is typically the scarcest in the Qwen family. Qwen3.8-27B,
+recommended in the initial pass, is demoted: under the two-way convention
+its first-position bias is Holm-significant at $+0.139$, the largest in
+the roster, so we no longer call it stable.
+
+\paragraph{G3: Order swapping is mandatory for single judges; above a
+panel its extra benefit is modest.}
+Even the most order-stable judge flips on one pair in eight, and the
+least stable on one in three, so single-judge deployments must judge in
+both orders and aggregate on the canonical verdict. Above a majority
+panel, however, order-swap aggregation adds only $+0.011$ accuracy (0.707
+versus 0.696) while raising abstention (0.178 to 0.194), so panels should
+combine judges from different families and balance positions across the
+pool rather than pay for per-pair double-judging of everything.
+
+\paragraph{G4: Do not manage length behaviour by prompt editing.}
+The initial pass attributed an anti-length tilt to the anti-verbosity
+sentence; the four-arm ablation refutes the attribution: arm differences
+are within noise (interaction $p=0.93$) and no per-judge length
+coefficient survives Holm correction. Prompt edits are the wrong lever
+for length behaviour on this benchmark. If length matters to your use
+case, probe it directly with length-stratified pairs and, where possible,
+standardise candidate lengths before comparison; re-probe after any
+roster or task change, because the tilt appears to be a property of the
+roster--stimulus combination.
+
+\paragraph{G5: Audit kinship with ground truth before trusting a judge
+on its own ecosystem.}
+Family preference is real but lineage-specific and, on harder verifiable
+tasks, weak: the main pass found Qwen avoidance ($-0.64$) and GLM reward
+($+1.10$), while the replication on new tasks found no family-level
+effect for the re-testable families. Any evaluation that uses a judge
+from family $X$ to rank models that include family $X$ should run a
+ground-truth-controlled kin probe first. Size the probe for power:
+detecting a 30\%-versus-8\% kin-side error difference at 80\% power needs
+about 50 kin-wrong pairs per family---roughly 0.1M free-tier tokens---not
+a token-sized spot check; our own Kimi cell ($n=12$) illustrates how
+small cells produce exploratory-only results.
+
+\paragraph{G6: Build panels across families, not across tiers.}
+The accuracy case for cross-family panels is weaker than the initial pass
+suggested---same-family, two-family, and three-family panels of three
+score 0.713, 0.697, and 0.688 with overlapping intervals and the ordering
+reversed---so we rest the recommendation on the agreement structure
+instead: family-level fault lines (Qwen--DeepSeek mean $\kappa=0.44$)
+mean that a three-judge panel drawn from three families decorrelates
+errors far more effectively than three tiers of the same family, which
+matters because the shared position component passes through majority
+voting unchanged while the panel converts abstentions into decisions at
+zero monetary cost.
+
+\paragraph{Relation to prior work.}
+Our findings refine three strands of the literature. The verbosity-bias
+literature documents that judges favour longer answers; our four-arm
+ablation shows the standard mitigation sentence is behaviourally inert on
+this benchmark---neither causing nor correcting the tilt---and that the
+apparent inversion does not survive clustered inference, a caution for
+length-controlled win-rate claims that do not account for question-level
+clustering. The self-preference literature establishes that judges recognise
+and reward their own generations; we generalise the unit of analysis from model to family, show that the
+effect's \emph{direction} varies by lineage, and add a replication on
+harder verifiable tasks in which the family-level effect does not
+transfer, which matters for the increasingly common situation where one
+provider both ships the judge and supplies some of the candidates. Finally,
+panel proposals argue that judge diversity averages away idiosyncratic
+errors; our panel analysis refines this: diversity cancels the independent
+noise component strongly enough to lift accuracy markedly, but the shared
+position component passes through majority voting unchanged, so panels must
+still pair diversity with order-balanced aggregation.
+
+%% ==================================================================
+\section{Limitations}
+\label{sec:limitations}
+
+Our findings should be read against several limitations. First, the ten
+open-source judges are all served through a single provider endpoint, and the
+two proprietary judges through a second one. Although this removes serving
+differences as a confound within each group, it also means that our
+observations reflect the providers' quantization and serving configurations
+of each checkpoint rather than the raw open weights, and replication on
+self-hosted inference may differ in detail; in particular, the Agnes platform
+injects undisclosed system instructions ahead of our judging prompt, so the
+proprietary judges' absolute numbers are indicative rather than strictly
+comparable to the open panel. Second, the roster covers four
+model families that all originate from Chinese development teams, because
+these are the families with usable free tiers on the chosen platform at the
+time of the study; Western open families such as Llama or Mistral were not
+available under the zero-cost constraint, so our family-preference findings
+should be generalized to those families with care, and the GLM family is
+represented by a single checkpoint, so GLM-specific conclusions rest on one
+observation. Third, two judges are
+served with a mandatory reasoning phase, which is entangled with their
+family identity and tier; we treat thinking mode as an observational
+variable and report where it plausibly matters, but a fully crossed
+thinking-by-family design is not realizable on this platform. Fourth, the
+evaluation uses 400 pairs over four English-language domains. While the
+stratified design gives every judge the same stimulus set and the bootstrap
+accounts for question-level clustering, the absolute number of
+ground-truth-clear kin pairs per family remains modest, and kin-preference
+estimates for individual judges carry correspondingly wide intervals. Fifth,
+our generators produce single answers per question at a moderate sampling
+temperature; verdicts could vary with additional samples, and we leave
+multi-sample generation to future work. Finally, the two open-ended domains
+lack ground truth, so for those domains our reliability claims are about agreement among
+judges rather than closeness to correctness. The confirmatory battery has
+coverage limits that we report rather than paper over: the commercial
+anchor (E7) and the thinking-mode contrast (E9) could not be run under
+the zero-cost constraint, the kin replication cells for DeepSeek ($n=31$)
+and Kimi ($n=12$) are small and exploratory, GLM-5.3 had exhausted its
+free quota and could not be re-tested on the new tasks, and the
+human-annotation kit released with the artifact was still unlabeled at
+revision time, so all reliability claims remain at the judge--judge
+level.
+
+%% ==================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We audited the judging behaviour of every LLM reachable at zero
+monetary cost on two public platforms at the time of study: ten
+open-weight free-tier judges from four families and two proprietary
+free-tier references, evaluated under one protocol over 400 answer pairs
+in four domains, with both presentation orders, a test--retest subset,
+and ground-truth-controlled family-preference probes, followed by a
+pre-registered confirmatory battery (prompt ablations, harder verifiable
+tasks, reference-free deployment, and cross-session retests). The picture
+that emerges is nuanced but actionable. Free judges are viable: the
+strongest open checkpoints reach 0.71 accuracy on verifiable pairs and
+inter-judge agreement comparable to published commercial audits. But
+viability is conditional on screening, because the failure modes are
+systematic rather than random: severity collapse that is prompt-contingent
+and fixable with a one-line prompt change, an apparent anti-length tilt
+that proves fragile under clustered inference and inert to prompt
+revision, lineage-specific kin favouritism in the main pass that does not
+transfer to harder verifiable tasks, and majority voting that inherits,
+rather than removes, the shared position bias while converting
+abstentions into decisions. Every one of these failure modes is
+detectable with probes that cost a few thousand free-tier tokens, and
+every probe ships with the released artifact, so the audit and its
+screening kit can be re-run by any group as free-tier catalogues evolve.
+As evaluation infrastructure comes to rest on machine judgement, the
+reliability of the judges themselves---especially the ones that cost
+nothing---deserves the same systematic attention that has been lavished
+on the systems they grade.
+
+%% ==================================================================
+\section*{Data and Code Availability}
+
+All prompts, the 200-question evaluation set, 140 additional verified
+tasks, the deterministic parsers, the de-identified human-annotation kit,
+raw verdict logs for the main pass and the robustness battery (9{,}453 +
+1{,}815 verdicts), and analysis
+scripts are released atscripts are released at
+\texttt{github.com/43aquarius/LLM-as-a-Judge}.
+
+\section*{Acknowledgements}
+%% Removed empty placeholder; reinstate per target-journal requirements
+%% (funding, conflicts) at submission time.
+
+\bibliography{refs}
+
+\end{document}

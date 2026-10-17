@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DejaVu Sans', 'Helvetica Neue', Arial, sans-serif; background: #ffffff; }
+  .canvas { width: 1400px; height: 560px; background: #ffffff; position: relative; padding: 26px 30px; }
+  .pipeline { display: flex; align-items: stretch; gap: 0; height: 420px; margin-top: 18px; }
+  .stage { display: flex; flex-direction: column; }
+  .stage-box { border: 1.6px solid #94a3b8; border-radius: 10px; background: #ffffff; padding: 14px 14px 12px; display: flex; flex-direction: column; }
+  .stage-title { font-size: 17px; font-weight: 700; color: #1e293b; margin-bottom: 3px; }
+  .stage-sub { font-size: 12.5px; color: #64748b; margin-bottom: 10px; }
+  .arrow-col { display: flex; align-items: center; justify-content: center; width: 46px; flex-shrink: 0; }
+  .arrow { width: 34px; height: 14px; position: relative; }
+  .arrow::before { content: ''; position: absolute; left: 0; top: 5px; width: 26px; height: 3.5px; background: #64748b; }
+  .arrow::after { content: ''; position: absolute; right: 0; top: 0; border-left: 11px solid #64748b; border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+
+  /* stage widths */
+  .w-questions { width: 300px; }
+  .w-generators { width: 250px; }
+  .w-pairs { width: 235px; }
+  .w-judges { width: 250px; }
+  .w-analysis { width: 290px; }
+
+  .qcard { border-radius: 7px; padding: 7px 10px; margin-bottom: 7px; font-size: 13px; color: #1e293b; border: 1px solid transparent; }
+  .qcard b { font-size: 13px; }
+  .qcard .n { float: right; color: #64748b; font-size: 12px; }
+  .c-math { background: #EEF4FB; border-color: #C5D9EE; }
+  .c-know { background: #EDF6F3; border-color: #C3E0D6; }
+  .c-creat { background: #F9F0F2; border-color: #E4C9D1; }
+  .c-summ { background: #FAF4E8; border-color: #E8D9B5; }
+  .gt-tag { display: inline-block; font-size: 10.5px; font-weight: 700; color: #3f6212; background: #ECFCCB; border: 1px solid #D9F99D; border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
+
+  .gen-list { display: flex; flex-direction: column; gap: 6px; }
+  .gen-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #1e293b; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(0,0,0,.25); }
+  .d-qwen { background: #5B8DB8; } .d-ds { background: #4C9A8A; } .d-glm { background: #B3748A; } .d-kimi { background: #C89442; }
+  .fam-label { color: #64748b; font-size: 11.5px; }
+  .badge { margin-top: auto; background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px 9px; font-size: 12.5px; color: #334155; text-align: center; }
+
+  .pair-card { border-radius: 7px; border: 1px solid #D8E0EA; background: #F8FAFC; padding: 9px 11px; font-size: 13px; color: #1e293b; margin-bottom: 7px; }
+  .swap { display: flex; align-items: center; gap: 7px; margin-top: 2px; }
+  .swap-ico { font-size: 15px; color: #475569; }
+  .small-note { font-size: 11.5px; color: #64748b; line-height: 1.35; }
+
+  .judge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 8px; }
+  .jchip { border-radius: 5px; padding: 4px 6px; font-size: 10.5px; color: #ffffff; text-align: center; }
+  .jq { background: #5B8DB8; } .jd { background: #4C9A8A; } .jg { background: #B3748A; } .jk { background: #C89442; } .ja { background: #8B7FC7; }
+  .verdict { font-family: 'DejaVu Sans Mono', monospace; font-size: 11.5px; color: #475569; background: #F1F5F9; border-radius: 5px; padding: 5px 8px; text-align: center; }
+
+  .ana-list { display: flex; flex-direction: column; gap: 6px; }
+  .ana-item { border-radius: 7px; border: 1px solid #D8E0EA; background: #ffffff; padding: 7px 10px; font-size: 13px; color: #1e293b; }
+  .ana-item span { color: #64748b; font-size: 11.5px; display: block; margin-top: 1px; }
+  .legend { position: absolute; top: 24px; right: 32px; display: flex; gap: 14px; font-size: 12px; color: #475569; align-items: center; }
+  .legend .dot { width: 9px; height: 9px; }
+  .title-note { font-size: 12.5px; color: #94a3b8; margin-top: 14px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="legend">
+    <span><span class="dot d-qwen"></span> Qwen</span>
+    <span><span class="dot d-ds"></span> DeepSeek</span>
+    <span><span class="dot d-glm"></span> GLM</span>
+    <span><span class="dot d-kimi"></span> Kimi</span>
+    <span><span class="dot" style="background:#8B7FC7;"></span> Agnes (proprietary)</span>
+  </div>
+  <div class="pipeline">
+    <div class="stage w-questions">
+      <div class="stage-box" style="background:#FBFCFE;">
+        <div class="stage-title">Question Bank</div>
+        <div class="stage-sub">200 questions &times; 4 domains</div>
+        <div class="qcard c-math"><b>Math</b> (GSM8K) <span class="n">50</span><br><span class="small-note">numeric ground truth</span></div>
+        <div class="qcard c-know"><b>Knowledge</b> (TruthfulQA) <span class="n">50</span><br><span class="small-note">reference answers</span></div>
+        <div class="qcard c-creat"><b>Creative Writing</b> <span class="n">50</span><br><span class="small-note">open-ended</span></div>
+        <div class="qcard c-summ"><b>Abstract Explanation</b> <span class="n">50</span><br><span class="small-note">open-ended</span></div>
+      </div>
+    </div>
+    <div class="arrow-col"><div class="arrow"></div></div>
+    <div class="stage w-generators">
+      <div class="stage-box">
+        <div class="stage-title">Generators</div>
+        <div class="stage-sub">5 models, 4 families</div>
+        <div class="gen-list">
+          <div class="gen-item"><span class="dot d-qwen"></span> Qwen3.8-Max</div>
+          <div class="gen-item"><span class="dot d-qwen"></span> Qwen3.8-Flash</div>
+          <div class="gen-item"><span class="dot d-ds"></span> DeepSeek-V4-Pro</div>
+          <div class="gen-item"><span class="dot d-glm"></span> GLM-5.3</div>
+          <div class="gen-item"><span class="dot d-kimi"></span> Kimi-K3</div>
+        </div>
+        <div class="badge">1,000 candidate answers</div>
+      </div>
+    </div>
+    <div class="arrow-col"><div class="arrow"></div></div>
+    <div class="stage w-pairs">
+      <div class="stage-box">
+        <div class="stage-title">Pair Construction</div>
+        <div class="stage-sub">stratified sampling</div>
+        <div class="pair-card"><b>400 answer pairs</b><br><span class="small-note">round-robin over 10 generator pairings</span></div>
+        <div class="pair-card">GT-stratified in verifiable domains <span class="gt-tag">66 GT-clear</span></div>
+        <div class="pair-card swap"><span class="swap-ico">&#8646;</span> every pair judged in <b>both A/B orders</b></div>
+      </div>
+    </div>
+    <div class="arrow-col"><div class="arrow"></div></div>
+    <div class="stage w-judges">
+      <div class="stage-box">
+        <div class="stage-title">12 Judges</div>
+        <div class="stage-sub">10 open-source (4 families) + 2 proprietary</div>
+        <div class="judge-grid">
+          <div class="jchip jq">Qw3.7-Flash</div><div class="jchip jq">Qw3.8-Flash</div><div class="jchip jq">Qw3.8-27B</div>
+          <div class="jchip jq">Qw3.8-Max</div><div class="jchip jq">Qw3.8-2.4T</div>
+          <div class="jchip jd">DS-V4-Flash</div><div class="jchip jd">DS-V4.1-Flash</div><div class="jchip jd">DS-V4-Pro</div>
+          <div class="jchip jg">GLM-5.3</div><div class="jchip jk">Kimi-K3</div>
+          <div class="jchip ja">Agnes-2.5-Fl</div><div class="jchip ja">Agnes-3.0-Fl</div>
+        </div>
+        <div class="verdict">verdict: [[A]] &nbsp;[[B]] &nbsp;[[C]]</div>
+        <div class="badge">temperature 0 &nbsp;&middot;&nbsp; + test&ndash;retest subset</div>
+      </div>
+    </div>
+    <div class="arrow-col"><div class="arrow"></div></div>
+    <div class="stage w-analysis">
+      <div class="stage-box" style="background:#FBFCFE;">
+        <div class="stage-title">Bias &amp; Reliability Analysis</div>
+        <div class="stage-sub">cluster-bootstrap CIs</div>
+        <div class="ana-list">
+          <div class="ana-item">GT accuracy <span>on 66 ground-truth-clear pairs</span></div>
+          <div class="ana-item">Position bias <span>order-swap verdict flips</span></div>
+          <div class="ana-item">Length bias <span>longer-answer win rate</span></div>
+          <div class="ana-item">Family preference <span>kin-wrong pick rate</span></div>
+          <div class="ana-item">Agreement &amp; panels <span>pairwise Cohen's &kappa;, majority vote</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="title-note">Open-source judges served via one OpenAI-compatible free-tier endpoint; proprietary Agnes judges via their $0-priced API; identical prompts and sampling settings across judges.</div>
+</div>
+</body>
+</html>
