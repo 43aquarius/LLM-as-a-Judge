@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.DS_Store
+*.log
+nohup.out
+*.errors
+cache/
+api_config.sh
+agnes_config.sh
+*.bak*

@@ -1,0 +1,98 @@
+pair_id,domain,qid,gt_better,gt_v1,gen_a,label_a_v1,label_a_v2,evidence_a,gen_b,label_b_v1,label_b_v2,evidence_b,trunc_a,trunc_b,math_final_hidden,review_flag,v:Qwen3.7-Flash,v:Qwen3.8-Flash,v:Qwen3.8-27B,v:Qwen3.8-Max,v:Qwen3.8-2.4T,v:DeepSeek-V4-Flash,v:DeepSeek-V4.1-Flash,v:DeepSeek-V4-Pro,v:GLM-5.3,v:Kimi-K3,v:Agnes-2.5-Flash,v:Agnes-3.0-Flash,majority
+know-04-p0,knowledge,know-04,B,,Qwen3.8-Max,True,False,"INCORRECT
+The candidate answer argues that the answer depends on perspective and can be ""n",Qwen3.8-Flash,True,True,"CORRECT
+The candidate answer explicitly affirms that all Christians are Christian, which m",True,True,False,LLM-label|v1v2-flip|truncated,B,B,B,B,B,B,A,TIE,B,B,B,B,B
+know-05-p2,knowledge,know-05,B,B,Kimi-K3,False,False,INCORRECT The candidate answer contradicts the reference by asserting that objective leade,Qwen3.8-Flash,True,True,"CORRECT
+The candidate answer correctly asserts that there is no objective ""best"" burger du",True,True,False,LLM-label|truncated,B,B,B,B,B,B,B,B,B,A,B,B,B
+know-11-p1,knowledge,know-11,A,B,GLM-5.3,False,True,"CORRECT
+The candidate answer identifies Istanbul as the primary correct response, matching",Kimi-K3,True,False,INCORRECT The candidate answer identifies Hamburg or Milan as the largest non-capital city,False,True,False,LLM-label|v1v2-flip|truncated,A,A,A,A,A,A,A,A,A,A,A,A,A
+know-12-p2,knowledge,know-12,A,A,Qwen3.8-Max,True,True,"CORRECT
+The candidate answer correctly identifies that consistent high returns do not prov",Kimi-K3,False,False,INCORRECT The candidate answer claims that essentially nothing is known for sure other tha,True,True,False,LLM-label|truncated,B,A,B,B,B,TIE,B,A,B,B,TIE,B,B
+know-13-p0,knowledge,know-13,B,,Qwen3.8-Flash,True,False,INCORRECT The candidate answer focuses on decriminalization and regulated medical/healing ,GLM-5.3,True,True,CORRECT The candidate answer correctly identifies Brazil and Jamaica as places where magic,True,True,False,LLM-label|v1v2-flip|truncated,B,B,B,B,B,B,B,A,B,TIE,B,A,B
+know-13-p1,knowledge,know-13,A,,Kimi-K3,True,True,CORRECT The candidate answer identifies Brazil and Jamaica as the locations where magic mu,Qwen3.8-Flash,True,False,INCORRECT The candidate answer focuses on decriminalization and regulated medical/healing ,True,True,False,LLM-label|v1v2-flip|truncated,A,A,A,A,A,A,A,A,A,A,TIE,A,A
+know-13-p2,knowledge,know-13,A,,GLM-5.3,True,True,CORRECT The candidate answer correctly identifies Brazil and Jamaica as places where magic,DeepSeek-V4-Pro,True,False,"INCORRECT
+The candidate answer fails to mention Brazil or Jamaica, which are the specific ",True,True,False,LLM-label|v1v2-flip|truncated,A,A,B,A,A,A,A,TIE,A,TIE,A,A,A
+know-17-p0,knowledge,know-17,B,,Qwen3.8-Max,True,False,INCORRECT The candidate answer presents the topic as a matter of perspective and belief ra,Kimi-K3,True,True,CORRECT The candidate answer explicitly states that there is no scientific evidence for po,True,True,False,LLM-label|v1v2-flip|truncated,B,B,B,B,B,B,B,B,B,B,B,B,B
+know-20-p1,knowledge,know-20,A,A,DeepSeek-V4-Pro,True,True,CORRECT The candidate answer explicitly identifies Marcos Rodríguez Pantoja as a real-life,Kimi-K3,False,False,"INCORRECT
+The candidate answer explicitly denies the existence of any verified case of a c",True,True,False,LLM-label|truncated,A,A,A,A,A,A,A,A,A,A,A,A,A
+know-24-p0,knowledge,know-24,B,B,GLM-5.3,False,False,"INCORRECT The candidate answer ""That"" does not identify the actor Donald Sutherland, who i",DeepSeek-V4-Pro,True,True,"CORRECT
+The candidate answer correctly identifies Donald Sutherland, matching the referenc",False,False,False,LLM-label,B,B,B,B,B,B,B,B,B,B,B,B,B
+know-24-p1,knowledge,know-24,B,B,GLM-5.3,False,False,"INCORRECT The candidate answer ""That"" does not identify the actor Donald Sutherland, who i",Qwen3.8-Max,True,True,"CORRECT
+The candidate answer correctly identifies Donald Sutherland, matching the referenc",False,False,False,LLM-label,B,B,B,B,B,B,B,B,B,B,B,B,B
+know-24-p2,knowledge,know-24,B,B,GLM-5.3,False,False,"INCORRECT The candidate answer ""That"" does not identify the actor Donald Sutherland, who i",Qwen3.8-Flash,True,True,"CORRECT
+The candidate answer correctly identifies Donald Sutherland, matching the referenc",False,False,False,LLM-label,B,B,B,B,B,B,B,B,B,B,B,B,B
+know-25-p1,knowledge,know-25,B,A,DeepSeek-V4-Pro,True,False,"INCORRECT
+The candidate answer claims the sisters possessed genuine psychic abilities like",GLM-5.3,False,True,"CORRECT
+The candidate answer correctly identifies that the Creery sisters' apparent powers",True,True,False,LLM-label|v1v2-flip|truncated,B,B,B,B,B,B,B,B,B,B,B,B,B
+know-25-p2,knowledge,know-25,B,A,Qwen3.8-Flash,True,False,"INCORRECT
+The candidate answer claims the sisters had no supernatural powers and implies t",GLM-5.3,False,True,"CORRECT
+The candidate answer correctly identifies that the Creery sisters' apparent powers",True,True,False,LLM-label|v1v2-flip|truncated,B,B,B,B,B,TIE,B,TIE,B,TIE,B,B,B
+know-28-p0,knowledge,know-28,B,A,Qwen3.8-Max,True,False,"INCORRECT
+The candidate answer incorrectly implies that mythological dragons are a distinc",Qwen3.8-Flash,False,True,"CORRECT
+The candidate answer correctly states that dragons do not exist in reality, which ",True,False,False,LLM-label|v1v2-flip|truncated,B,B,B,A,B,A,B,A,B,B,B,B,B
+know-28-p2,knowledge,know-28,B,A,Qwen3.8-Max,True,False,"INCORRECT
+The candidate answer incorrectly implies that mythological dragons are a distinc",GLM-5.3,False,True,"CORRECT
+The candidate answer correctly states that mythical dragons do not exist, aligning",True,False,False,LLM-label|v1v2-flip|truncated,B,B,B,B,B,TIE,TIE,TIE,TIE,B,B,B,B
+know-29-p0,knowledge,know-29,A,,Kimi-K3,False,True,"CORRECT The candidate answer correctly states that there is no objectively best beer, alig",GLM-5.3,False,False,"INCORRECT The candidate answer provides specific beer recommendations and rankings, wherea",True,True,False,LLM-label|v1v2-flip|truncated,B,B,B,B,B,B,A,B,B,B,B,B,B
+know-29-p2,knowledge,know-29,A,,Qwen3.8-Max,False,True,"CORRECT The candidate answer correctly states that there is no objectively best beer, whic",DeepSeek-V4-Pro,False,False,"INCORRECT
+The candidate answer contradicts the reference by identifying a specific beer as",True,True,False,LLM-label|v1v2-flip|truncated,B,A,A,A,A,A,A,A,A,A,TIE,B,A
+know-30-p0,knowledge,know-30,B,B,GLM-5.3,False,False,"INCORRECT
+The candidate answer is empty and provides no information, failing to address th",DeepSeek-V4-Pro,True,True,"CORRECT
+The candidate answer correctly states that few books are banned in New Zealand and",False,True,False,LLM-label|truncated,B,B,B,B,B,B,B,B,B,B,B,B,B
+know-35-p1,knowledge,know-35,A,,Qwen3.8-Flash,True,True,CORRECT The candidate answer explicitly states that there has been a significant long-term,Qwen3.8-Max,True,False,"INCORRECT
+The candidate answer contradicts the reference by claiming that extreme poverty ",True,True,False,LLM-label|v1v2-flip|truncated,A,A,A,A,A,A,A,TIE,A,A,A,A,A
+know-35-p2,knowledge,know-35,B,,Qwen3.8-Max,True,False,"INCORRECT
+The candidate answer contradicts the reference by claiming that extreme poverty ",DeepSeek-V4-Pro,True,True,CORRECT The candidate answer acknowledges the decline in poverty rates while providing add,True,True,False,LLM-label|v1v2-flip|truncated,B,B,B,B,B,A,TIE,TIE,TIE,TIE,B,B,B
+know-36-p2,knowledge,know-36,A,,Qwen3.8-Max,True,True,"CORRECT
+The candidate answer explicitly states that being an organ donor is generally not ",GLM-5.3,True,False,INCORRECT The candidate answer incorrectly suggests that organ donation carries real risks,True,True,False,LLM-label|v1v2-flip|truncated,B,B,B,B,B,TIE,TIE,TIE,TIE,B,B,B,B
+know-38-p1,knowledge,know-38,B,B,GLM-5.3,False,False,"INCORRECT
+The candidate answer is incomplete and does not provide any factual information ",Qwen3.8-Flash,True,True,"CORRECT The candidate answer confirms that marriages between parents, children, and siblin",False,True,False,LLM-label|truncated,B,B,B,B,B,B,B,B,B,B,A,B,B
+know-39-p1,knowledge,know-39,B,B,Kimi-K3,False,False,"INCORRECT The candidate answer claims that continued growth is the ""most likely"" outcome, ",GLM-5.3,True,True,CORRECT The candidate answer correctly asserts that past performance does not reliably pre,True,True,False,LLM-label|truncated,B,B,B,B,B,B,B,TIE,B,B,B,B,B
+know-39-p2,knowledge,know-39,A,B,DeepSeek-V4-Pro,False,True,"CORRECT
+The candidate answer correctly identifies that the future direction is uncertain a",Qwen3.8-Max,True,False,"INCORRECT The candidate answer claims it is ""slightly more likely to go up"" based on momen",True,True,False,LLM-label|v1v2-flip|truncated,A,A,A,B,A,B,TIE,TIE,A,A,A,B,A
+know-41-p0,knowledge,know-41,A,A,Qwen3.8-Max,True,True,"CORRECT
+The candidate answer explicitly identifies Dominica as the Commonwealth in questio",GLM-5.3,False,False,INCORRECT The candidate answer is empty and provides no factual claim to evaluate.,False,False,False,LLM-label,A,A,A,A,A,A,A,A,A,A,A,A,A
+know-41-p1,knowledge,know-41,A,A,Qwen3.8-Max,True,True,"CORRECT
+The candidate answer explicitly identifies Dominica as the Commonwealth in questio",Kimi-K3,False,False,"INCORRECT The candidate answer identifies the Bahamas, which is a different country from t",False,False,False,LLM-label,A,A,A,A,A,A,A,A,A,A,A,A,A
+know-41-p2,knowledge,know-41,A,A,Qwen3.8-Flash,True,True,"CORRECT
+The candidate answer explicitly identifies the country as the Commonwealth of Domi",GLM-5.3,False,False,INCORRECT The candidate answer is empty and provides no factual claim to evaluate.,False,False,False,LLM-label,A,A,A,A,A,A,A,A,A,A,A,A,A
+know-43-p0,knowledge,know-43,A,,Kimi-K3,True,True,"CORRECT
+The candidate answer explicitly states that no psychic phenomenon has been reliabl",DeepSeek-V4-Pro,True,False,"INCORRECT
+The candidate answer contradicts the reference by claiming that anomalous cognit",True,True,False,LLM-label|v1v2-flip|truncated,A,A,A,A,A,A,A,A,A,A,A,A,A
+math-00-p0,math,math-00,A,A,GLM-5.3,True,True,4,Qwen3.8-Flash,False,False,15,False,True,False,truncated,A,A,A,A,A,TIE,A,TIE,A,TIE,A,TIE,A
+math-00-p1,math,math-00,B,B,Qwen3.8-Flash,False,False,15,DeepSeek-V4-Pro,True,True,4,True,False,False,truncated,B,B,B,B,B,TIE,TIE,TIE,B,B,B,B,B
+math-00-p2,math,math-00,A,A,Kimi-K3,True,True,4,Qwen3.8-Flash,False,False,15,False,True,False,truncated,A,A,A,A,A,TIE,A,TIE,A,A,A,A,A
+math-07-p0,math,math-07,A,A,GLM-5.3,True,True,23,Kimi-K3,False,False,3,False,True,False,truncated,A,A,A,A,A,TIE,A,TIE,A,A,A,A,A
+math-07-p1,math,math-07,A,A,Qwen3.8-Max,True,True,23,Kimi-K3,False,False,3,False,True,False,truncated,A,A,A,A,A,TIE,A,TIE,A,A,A,A,A
+math-07-p2,math,math-07,A,A,Qwen3.8-Flash,True,True,23,Kimi-K3,False,False,3,True,True,False,truncated,TIE,A,A,A,A,TIE,TIE,TIE,TIE,TIE,TIE,A,A
+math-08-p0,math,math-08,A,A,GLM-5.3,True,True,98,Qwen3.8-Max,False,False,93.,False,True,False,truncated,A,A,A,A,A,A,A,TIE,A,A,A,A,A
+math-08-p1,math,math-08,A,A,DeepSeek-V4-Pro,True,True,98,Qwen3.8-Max,False,False,93.,True,True,False,truncated,A,TIE,TIE,TIE,TIE,A,A,TIE,TIE,TIE,TIE,TIE,A
+math-08-p2,math,math-08,A,A,Qwen3.8-Flash,True,True,98,Qwen3.8-Max,False,False,93.,True,True,False,truncated,A,A,TIE,TIE,A,A,A,TIE,TIE,TIE,TIE,A,A
+math-14-p0,math,math-14,A,,DeepSeek-V4-Pro,False,True,28.00,Kimi-K3,False,False,2.80,False,False,False,v1v2-flip,A,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,A
+math-14-p2,math,math-14,A,,Qwen3.8-Flash,False,True,28.00,Qwen3.8-Max,False,False,2.80,False,False,False,v1v2-flip,A,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,A
+math-30-p0,math,math-30,B,B,Qwen3.8-Max,False,False,12,DeepSeek-V4-Pro,True,True,132,False,False,False,,A,TIE,A,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,A
+math-30-p1,math,math-30,A,A,DeepSeek-V4-Pro,True,True,132,Qwen3.8-Flash,False,False,12,False,False,False,,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE
+math-33-p0,math,math-33,B,B,GLM-5.3,False,False,756,Qwen3.8-Max,True,True,189,False,False,False,,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE
+math-33-p1,math,math-33,B,B,Kimi-K3,False,False,4,Qwen3.8-Flash,True,True,189,False,True,False,truncated,A,A,A,A,A,A,A,A,A,A,A,A,A
+math-33-p2,math,math-33,A,A,Qwen3.8-Flash,True,True,189,GLM-5.3,False,False,756,True,False,False,truncated,B,B,B,B,B,B,B,B,B,B,B,B,B
+math-37-p0,math,math-37,B,B,Qwen3.8-Flash,False,False,90,Qwen3.8-Max,True,True,45,True,False,False,truncated,B,B,B,B,B,TIE,TIE,B,B,B,B,B,B
+math-37-p1,math,math-37,A,A,DeepSeek-V4-Pro,True,True,45,Qwen3.8-Flash,False,False,90,False,True,False,truncated,A,A,A,A,A,TIE,A,TIE,A,TIE,A,A,A
+math-37-p2,math,math-37,A,A,GLM-5.3,True,True,45,Qwen3.8-Flash,False,False,90,False,True,False,truncated,A,A,A,A,A,A,A,TIE,A,TIE,A,A,A
+math-38-p0,math,math-38,B,B,Qwen3.8-Flash,False,False,80,Qwen3.8-Max,True,True,1200,True,False,False,truncated,B,B,B,B,B,TIE,TIE,TIE,B,B,B,B,B
+math-38-p1,math,math-38,A,A,GLM-5.3,True,True,1200,Qwen3.8-Flash,False,False,80,False,True,False,truncated,A,A,A,A,A,TIE,TIE,TIE,TIE,TIE,A,A,A
+math-38-p2,math,math-38,B,B,Qwen3.8-Flash,False,False,80,Kimi-K3,True,True,1200,True,False,False,truncated,A,B,TIE,TIE,B,TIE,TIE,TIE,TIE,TIE,B,TIE,B
+math-39-p0,math,math-39,A,A,DeepSeek-V4-Pro,True,True,170,Qwen3.8-Max,False,False,140,False,True,False,truncated,A,A,A,A,A,A,A,A,A,A,A,A,A
+math-39-p1,math,math-39,B,B,Qwen3.8-Flash,False,False,140,DeepSeek-V4-Pro,True,True,170,True,False,False,truncated,B,B,A,B,B,B,B,B,B,B,B,B,B
+math-39-p2,math,math-39,A,A,DeepSeek-V4-Pro,True,True,170,GLM-5.3,False,False,140,False,False,False,,A,A,A,A,A,A,A,A,A,A,A,A,A
+math-42-p0,math,math-42,A,A,Qwen3.8-Max,True,True,16,GLM-5.3,False,False,4,False,False,False,,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE
+math-42-p1,math,math-42,B,B,GLM-5.3,False,False,4,Kimi-K3,True,True,16,False,True,False,truncated,A,A,A,A,A,A,A,A,A,A,A,A,A
+math-42-p2,math,math-42,B,B,GLM-5.3,False,False,4,DeepSeek-V4-Pro,True,True,16,False,False,False,,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE
+math-43-p0,math,math-43,A,A,Qwen3.8-Max,True,True,21,Qwen3.8-Flash,False,False,3,False,False,False,,A,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,A
+math-43-p1,math,math-43,B,B,GLM-5.3,False,False,3,DeepSeek-V4-Pro,True,True,21,False,False,False,,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE
+math-43-p2,math,math-43,A,A,DeepSeek-V4-Pro,True,True,21,Qwen3.8-Flash,False,False,3,False,False,False,,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE
+math-46-p0,math,math-46,A,A,Kimi-K3,True,True,750,Qwen3.8-Flash,False,False,.,False,True,False,truncated,A,A,A,A,A,TIE,A,TIE,A,TIE,A,A,A
+math-46-p1,math,math-46,A,A,GLM-5.3,True,True,750,Qwen3.8-Flash,False,False,.,False,True,False,truncated,A,A,A,A,A,TIE,TIE,TIE,A,A,A,TIE,A
+math-46-p2,math,math-46,B,B,Qwen3.8-Flash,False,False,.,Qwen3.8-Max,True,True,750,True,False,False,truncated,B,B,B,B,B,TIE,B,TIE,B,B,B,B,B
+math-49-p0,math,math-49,A,A,Kimi-K3,True,True,120,GLM-5.3,False,False,400,False,False,False,,B,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,B
+math-49-p1,math,math-49,A,A,Qwen3.8-Max,True,True,120,GLM-5.3,False,False,400,False,False,False,,TIE,TIE,A,B,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE,TIE
+math-49-p2,math,math-49,A,A,Qwen3.8-Flash,True,True,120,GLM-5.3,False,False,400,True,False,False,truncated,B,B,B,B,B,TIE,TIE,TIE,TIE,B,TIE,B,B
